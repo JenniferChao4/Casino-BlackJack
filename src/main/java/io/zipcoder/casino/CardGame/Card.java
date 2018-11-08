@@ -2,6 +2,9 @@ package io.zipcoder.casino.CardGame;
 
 import java.util.Objects;
 
+import static io.zipcoder.casino.CardGame.Face.getFaceByValue;
+import static io.zipcoder.casino.CardGame.Suit.getSuitByValue;
+
 public class Card {
 
     private Suit suit;
@@ -15,8 +18,15 @@ public class Card {
         setBlack();
     }
 
-    public static Card toCard(String face, String suit){
-        return new Card(Suit.valueOf(suit.toUpperCase()), Face.valueOf(face.toUpperCase()));
+//    public static Card toCard(String suit, String face){
+//        return new Card(Suit.valueOf(suit.toUpperCase()), Face.valueOf(face.toUpperCase()));
+//    }
+
+    public static Card toCard(char face, char suit){
+//        char s = suit.charAt(0);
+//        char f = face.charAt(0);
+//        return new Card(getSuitByValue(s), getFaceByValue(f));
+        return new Card(getSuitByValue(suit), getFaceByValue(face));
     }
 
     public Suit getSuit() {
