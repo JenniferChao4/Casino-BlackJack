@@ -3,6 +3,7 @@ package io.zipcoder.casino.CardGame.Solitaire;
 import io.zipcoder.casino.CardGame.Card;
 import io.zipcoder.casino.CardGame.CardGame;
 import io.zipcoder.casino.CardGame.Deck;
+import io.zipcoder.casino.Console;
 import io.zipcoder.casino.Player;
 
 import java.util.Scanner;
@@ -147,19 +148,17 @@ public class Solitaire extends CardGame {
     }
 
     public void takeATurn() {
-        System.out.println("\nLet's play. Enter \'DRAW\' to draw a card\n");
+        Console.println("Let's play");
         while (!getInput().equals("QUIT") || !allFoundsFull()) {
-            System.out.println("Great. next?");
-            System.out.println("in while - loop");
-            if (getInput().equals("DRAW")) {
+            if (Console.getInputString("Enter draw to draw a card").equals("DRAW")) {
                 drawCard();
                 print();
                 continue;
-            } else if (getInput().equals("P")) {
+            } else if (Console.getInputString("Enter draw to draw a card").equals("P")) {
                 pickUp();
                 dropToTab(getInput().charAt(0));
                 print();
-            } else if (getInput().length() == 2) {
+            } else if (Console.getInputString("Enter draw to draw a card").length() == 2) {
                 pull(String.valueOf(getInput()));
                 dropToTab(getInput().charAt(0));
                 print();
