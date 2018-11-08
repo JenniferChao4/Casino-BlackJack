@@ -7,6 +7,8 @@ import io.zipcoder.casino.CardGame.Suit;
 import org.junit.Assert;
 import org.junit.Test;
 
+import static io.zipcoder.casino.CardGame.Solitaire.Solitaire.tempStack;
+
 public class FoundationTest {
 
 
@@ -21,9 +23,9 @@ public class FoundationTest {
 
 
         Card chosen = deck.deckOfCards.pop();
-        foundation.tempStack.push(chosen);
+        tempStack.push(chosen);
         foundation.clubStack.push(card);
-        foundation.whichSuit(foundation.tempStack);
+        foundation.whichSuit(tempStack);
         //WHEN
 
         Card expected = new Card(Suit.CLUBS, Face.KING);
@@ -45,9 +47,9 @@ public class FoundationTest {
                 Face.QUEEN);
 
 
-        foundation.tempStack.push(tempCard);
+        tempStack.push(tempCard);
         foundation.diamondStack.push(cardOnFoundation);
-        foundation.whichSuit(foundation.tempStack);
+        foundation.whichSuit(tempStack);
         //WHEN
 
         Card expected = new Card(Suit.DIAMONDS, Face.KING);
@@ -66,9 +68,9 @@ public class FoundationTest {
                 Face.QUEEN);
 
 
-        foundation.tempStack.push(tempCard);
+        tempStack.push(tempCard);
         foundation.heartStack.push(cardOnFoundation);
-        foundation.whichSuit(foundation.tempStack);
+        foundation.whichSuit(tempStack);
         //WHEN
 
         Card expected = new Card(Suit.HEARTS, Face.KING);
@@ -86,9 +88,9 @@ public class FoundationTest {
                 Face.QUEEN);
 
 
-        foundation.tempStack.push(tempCard);
+        tempStack.push(tempCard);
         foundation.spadeStack.push(cardOnFoundation);
-        foundation.whichSuit(foundation.tempStack);
+        foundation.whichSuit(tempStack);
         //WHEN
 
         Card expected = new Card(Suit.SPADES, Face.KING);
@@ -106,9 +108,9 @@ public class FoundationTest {
                 Face.TEN);
 
 
-        foundation.tempStack.push(tempCard);
+        tempStack.push(tempCard);
         foundation.spadeStack.push(cardOnFoundation);
-        foundation.whichSuit(foundation.tempStack);
+        foundation.whichSuit(tempStack);
         //WHEN
 
         Card expected = new Card(Suit.SPADES, Face.KING);
@@ -126,9 +128,9 @@ public class FoundationTest {
         Foundation foundation1 = new Foundation();
 
 
-        foundation1.tempStack.push(tempCard);
+        tempStack.push(tempCard);
 
-        foundation1.whichSuit(foundation1.tempStack);
+        foundation1.whichSuit(tempStack);
         //WHEN
 
         Card expected = new Card(Suit.CLUBS, Face.ACE);
@@ -146,9 +148,9 @@ public class FoundationTest {
         Foundation foundation1 = new Foundation();
 
 
-        foundation1.tempStack.push(tempCard);
+        tempStack.push(tempCard);
 
-        foundation1.whichSuit(foundation1.tempStack);
+        foundation1.whichSuit(tempStack);
         //WHEN
 
         Card expected = new Card(Suit.DIAMONDS, Face.ACE);
@@ -166,9 +168,9 @@ public class FoundationTest {
         Foundation foundation1 = new Foundation();
 
 
-        foundation1.tempStack.push(tempCard);
+        tempStack.push(tempCard);
 
-        foundation1.whichSuit(foundation1.tempStack);
+        foundation1.whichSuit(tempStack);
         //WHEN
 
         Card expected = new Card(Suit.HEARTS, Face.ACE);
@@ -188,9 +190,9 @@ public class FoundationTest {
         Foundation foundation1 = new Foundation();
 
 
-        foundation1.tempStack.push(tempCard);
+        tempStack.push(tempCard);
 
-        foundation1.whichSuit(foundation1.tempStack);
+        foundation1.whichSuit(tempStack);
         //WHEN
 
         Card expected = new Card(Suit.SPADES, Face.ACE);

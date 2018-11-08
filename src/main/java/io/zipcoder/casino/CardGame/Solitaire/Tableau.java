@@ -4,12 +4,14 @@ import io.zipcoder.casino.CardGame.Card;
 
 import java.util.Stack;
 
+import static io.zipcoder.casino.CardGame.Solitaire.Solitaire.tempStack;
+
 public class Tableau {
     //consider making an undo method.
     //or better yet, create method that lets you know where you can place. highlighted card in the UI.
 
     public Stack<Card> stack;
-    public static Stack<Card> tempStack = new Stack<>();
+
 
     public Tableau(){
         this.stack = new Stack<>();

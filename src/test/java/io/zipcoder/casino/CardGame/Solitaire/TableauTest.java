@@ -6,7 +6,7 @@ import org.junit.Assert;
 import org.junit.Test;
 
 import static io.zipcoder.casino.CardGame.Card.toCard;
-import static io.zipcoder.casino.CardGame.Solitaire.Tableau.tempStack;
+import static io.zipcoder.casino.CardGame.Solitaire.Solitaire.tempStack;
 
 public class TableauTest {
 
@@ -36,7 +36,7 @@ public class TableauTest {
         stack1.add(testDeck.draw());
         stack1.add(testDeck.draw());
 
-        stack1.pull(toCard("Queen","Clubs"));
+        stack1.pull(toCard('Q', 'C'));
         Integer actual = tempStack.size();
         Integer expected = 3;
 
@@ -52,8 +52,8 @@ public class TableauTest {
         stack1.add(testDeck.draw());
         stack1.add(testDeck.draw());
 
-        stack2.add(toCard("King","Hearts"));
-        stack1.pull(toCard("Queen","Clubs"));
+        stack2.add(toCard('K', 'H'));
+        stack1.pull(toCard('Q', 'C'));
         stack2.place();
         Integer actual = stack2.size();
         Integer expected = 4;
@@ -70,8 +70,8 @@ public class TableauTest {
         stack1.add(testDeck.draw());
         stack1.add(testDeck.draw());
 
-        stack2.add(toCard("King","Hearts"));
-        stack1.pull(toCard("JACK","Clubs"));
+        stack2.add(toCard('K', 'H'));
+        stack1.pull(toCard('J', 'C'));
         stack2.place();
         Integer actual = stack2.size();
         Integer expected = 1;
@@ -85,7 +85,7 @@ public class TableauTest {
         stack1.add(testDeck.draw());
 
 
-        stack1.pull(toCard("KING","Clubs"));
+        stack1.pull(toCard('K', 'C'));
         stack2.place();
         Integer actual = stack2.size();
         Integer expected = 1;
@@ -107,9 +107,9 @@ public class TableauTest {
         for(Card c : stack1.stack) System.out.println("Stack 1 " + c.toString() + " " + c.isCovered());
         System.out.println("*******");
 
-        stack2.add(toCard("Queen","Hearts"));
+        stack2.add(toCard('Q', 'H'));
 
-        stack1.pull(toCard("Jack","Clubs"));
+        stack1.pull(toCard('J', 'C'));
         stack2.place();
 
 //        for(Card c : stack2.stack) System.out.println("Stack 2 " + c.toString() + " " + c.isCovered());
@@ -134,9 +134,9 @@ public class TableauTest {
         for(Card c : stack1.stack) System.out.println("Stack 1 " + c.toString() + " " + c.isCovered());
         System.out.println("\n** Before **** After **\n");
 
-        stack2.add(toCard("King","Hearts"));
+        stack2.add(toCard('K', 'H'));
 
-        stack1.pull(toCard("Queen","Clubs"));
+        stack1.pull(toCard('Q', 'C'));
         stack2.place();
 
 //        for(Card c : stack1.stack) System.out.println("Stack 1 " + c.toString() + " " + c.isCovered());

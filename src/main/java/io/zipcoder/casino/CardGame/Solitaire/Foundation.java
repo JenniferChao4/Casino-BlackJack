@@ -9,16 +9,13 @@ import java.util.Stack;
 
 public class Foundation {
 
-    public Stack<Card> tempStack = new Stack<>();
-    public Stack<Card> clubStack = new Stack<>();
-    public Stack<Card> diamondStack = new Stack<>();
-    public Stack<Card> heartStack = new Stack<>();
-    public Stack<Card> spadeStack = new Stack<>();
-
+    public static Stack<Card> clubStack = new Stack<>();
+    public static Stack<Card> diamondStack = new Stack<>();
+    public static Stack<Card> heartStack = new Stack<>();
+    public static Stack<Card> spadeStack = new Stack<>();
 
     public Foundation() {
 
-        this.tempStack = new Stack<>();
     }
 
     Tableau tab = new Tableau();
@@ -26,7 +23,7 @@ public class Foundation {
     Card card;
 
 
-    public void whichSuit(Stack<Card> tempStackCard) {
+    public static void whichSuit(Stack<Card> tempStackCard) {
 
         if (tempStackCard.peek().getSuit() == Suit.CLUBS) {
             //Checks if the Clubs Foundation is Empty
@@ -78,8 +75,12 @@ public class Foundation {
                 spadeStack.push(tempStackCard.peek());
             }
         }
-
     }
 
-
+    public static Boolean allFoundsFull() {
+        if (clubStack.size() == 13 && spadeStack.size() == 13
+                && heartStack.size() == 13  && diamondStack.size() == 13)
+            return true;
+        else return false;
+    }
 }
