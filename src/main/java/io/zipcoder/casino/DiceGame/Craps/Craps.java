@@ -159,12 +159,13 @@ public class Craps extends DiceGame implements Gamble {
 
     }
 
-    public void exitTable(CrapsPlayers crapsPlayer) {
-        removePlayer(player);
-    }
-
+    @Override
     public void takeATurn() {
 
+    }
+
+    public void exitTable(CrapsPlayers crapsPlayer) {
+        removePlayer(player);
     }
 
     public int getPointer() {
