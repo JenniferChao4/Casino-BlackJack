@@ -6,6 +6,7 @@ import java.util.Stack;
 
 import static io.zipcoder.casino.CardGame.Solitaire.Solitaire.lastStack;
 import static io.zipcoder.casino.CardGame.Solitaire.Solitaire.tempStack;
+import static io.zipcoder.casino.CardGame.Solitaire.Solitaire.unCover;
 
 public class Tableau {
     //consider making an undo method.
@@ -54,9 +55,5 @@ public class Tableau {
         } else {
             if (c.getFace().getPrimaryValue() == 13) return true; //primVal of 13 is KING
         } return false;
-    }
-
-    private void unCover(Stack<Card> lastStack){
-        if (size() > 0 && lastStack.peek().isCovered()) lastStack.peek().setCovered(false);
     }
 }

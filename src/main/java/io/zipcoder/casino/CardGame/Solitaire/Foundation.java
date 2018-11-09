@@ -7,6 +7,9 @@ import io.zipcoder.casino.CardGame.Suit;
 
 import java.util.Stack;
 
+import static io.zipcoder.casino.CardGame.Solitaire.Solitaire.lastStack;
+import static io.zipcoder.casino.CardGame.Solitaire.Solitaire.unCover;
+
 public class Foundation {
 
     public static Stack<Card> clubStack = new Stack<>();
@@ -71,6 +74,7 @@ public class Foundation {
                 spadeStack.push(tempStackCard.pop());
             }
         }
+        if (lastStack.size() > 0) unCover(lastStack);
     }
 
     public static Boolean allFoundsFull() {
