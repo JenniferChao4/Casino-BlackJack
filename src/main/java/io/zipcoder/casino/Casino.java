@@ -98,7 +98,7 @@ public final class Casino {
                     break;
                 case "SLOTS":
                     Slots slot = new Slots();
-                    slot.FillReels(5);
+                    slot.startSlots();
                     flag = false;
                     break;
                 case "LEAVE":
