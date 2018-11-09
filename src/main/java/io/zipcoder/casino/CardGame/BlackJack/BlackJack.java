@@ -57,6 +57,7 @@ public class BlackJack extends CardGame implements Gamble {
     public void doubleDown(BlackJackPlayer blackJackPlayer) {
         if (getJustDealt()) {
             blackJackPlayer.addToBetPot(blackJackPlayer.getInitialBet());
+            Console_BlackJack.doubleDownBet(blackJackPlayer);
         }
         setJustDealt(false);
     }
@@ -94,31 +95,29 @@ public class BlackJack extends CardGame implements Gamble {
     // REFACTOR THIS!!!!
     public ArrayList<Integer> countPlayerHand(BlackJackPlayer player) {
         ArrayList<Integer> handSum = new ArrayList<>();
-        Integer aceIsOne;
-        Integer aceIsEleven;
-        Integer noAce;
 
         if (player.hasAce() && calculate_Standard(player) > 21) {
-            player.setHandValue(calculate_AceIsOne(player));
-            aceIsOne = player.getHandValue();
-            handSum.add(aceIsOne);
+            handSum.add(setAceToOne(player));
 
         } else if (player.hasAce() && calculate_Standard(player) < 21) {
-            player.setHandValue(calculate_AceIsOne(player));
-            aceIsOne = player.getHandValue();
-            handSum.add(aceIsOne);
-
-            player.setHandValue(calculate_Standard(player));
-            aceIsEleven = player.getHandValue();
-            handSum.add(aceIsEleven);
+            handSum.add(setAceToOne(player));
+            handSum.add(setAceToEleven(player));
 
         } else {
-            player.setHandValue(calculate_Standard(player));
-            noAce = player.getHandValue();
-            handSum.add(noAce);
+            handSum.add(setAceToEleven(player));
         }
 
         return handSum;
+    }
+
+    public int setAceToOne(BlackJackPlayer blackJackPlayer) {
+        blackJackPlayer.setHandValue(calculate_AceIsOne(blackJackPlayer));
+        return blackJackPlayer.getHandValue();
+    }
+
+    public int setAceToEleven(BlackJackPlayer blackJackPlayer) {
+        blackJackPlayer.setHandValue(calculate_Standard(blackJackPlayer));
+        return blackJackPlayer.getHandValue();
     }
 
     public void deal() {
@@ -147,8 +146,6 @@ public class BlackJack extends CardGame implements Gamble {
     }
 
     public void start() {
-//        BlackJackGameplay gamePlay = new BlackJackGameplay();
-//        gamePlay.start(player);
     }
 
     public void end() {

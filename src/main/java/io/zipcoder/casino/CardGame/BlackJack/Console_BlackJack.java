@@ -9,11 +9,11 @@ import java.util.ArrayList;
 public class Console_BlackJack {
 
     public static void inputError() {
-        System.out.println("That's not a valid option, please try again.");
+        System.out.println("\nThat's not a valid option, please try again.");
     }
 
     public static void finalGoodbye() {
-        System.out.println("Thanks for coming to Thunder Theta, good bye!");
+        System.out.println("\nThanks for coming to Thunder Theta, good bye!");
     }
 
     public static void blackJackWelcome(Player player){
@@ -30,8 +30,8 @@ public class Console_BlackJack {
     public static void endGame(BlackJack blackJack, BlackJackPlayer blackJackPlayer, char result) {
         String name = blackJackPlayer.getPlayer().getName();
         System.out.println("\n~~~~~~~~~~~~~~~~~~~\n\nDETERMINING WINNER...");
-        System.out.println("\n~~~~~~~~~~~~~~~~~~~\n\nDealer's Hand Value: " + formatHandValue(blackJack.countPlayerHand(blackJack.getDealer())));
-        System.out.println("\nYour Hand Value: " + formatHandValue(blackJack.countPlayerHand(blackJackPlayer)));
+        System.out.println("\n~~~~~~~~~~~~~~~~~~~\n\nDealer's Hand Value: " + blackJack.getDealer().getHandValue());
+        System.out.println("\nYour Hand Value: " + blackJackPlayer.getHandValue());
         winOrLose(blackJackPlayer, result);
     }
 
@@ -46,6 +46,10 @@ public class Console_BlackJack {
                 default:
                     System.out.println("\nTie Game.\n\nCurrent Wallet: $" + blackJackPlayer.getPlayer().getWallet());
                     break;}
+    }
+
+    public static void doubleDownBet(BlackJackPlayer blackJackPlayer){
+        System.out.println("\n~~~~~~~~~~~~~~~~~~~\n\nNEW BET: " + blackJackPlayer.getBetPot());
     }
 
     public static void hitCard(BlackJackPlayer blackJackPlayer, Card card){
@@ -73,6 +77,14 @@ public class Console_BlackJack {
 
     public static String askPlayAgain() {
         return Console.getStringInput("\n~~~~~~~~~~~~~~~~~~~\n\nWould you like to play again?\n\n<< Yes - No >>").toUpperCase();
+    }
+
+    public static int getPlayerBet(){
+        return Console.getIntInput("\n~~~~~~~~~~~~~~~~~~~\n\nHow much would you like to bet?");
+    }
+
+    public static void minBetNotMet() {
+        System.out.println("\n~~~~~~~~~~~~~~~~~~~\n\nThe minimum bet is $50. Please try again.");
     }
 
     public static void goodByeMessage() {

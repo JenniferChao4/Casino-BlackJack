@@ -498,7 +498,7 @@ public class BlackJackTest {
         Assert.assertEquals(expected, actual);
     }
 
-    //    @Test
+//    @Test
 //    public void testAskForBet(){
 //        gamePlay.askForBet(testPlayer);
 //
@@ -510,7 +510,26 @@ public class BlackJackTest {
 
 //    @Test
 //    public void testPlayAgain(){
-//        gamePlay.askPlayAgain();
+//        gamePlay.askPlayAgain("YES");
+//
+//        testPlayer.setBetPot(999999999);
+//        gamePlay.resetGame();
+//
+//        int expected = 0;
+//        int actual = testPlayer.getBetPot();
+//
+//        Assert.assertEquals(expected, actual);
+//    }
+
+//    @Test
+//    public void testPlayerChoice_Quit(){
+//        gamePlay.setFlag(true);
+//        gamePlay.playerChoice("Quit");
+//
+//        boolean expected = false;
+//        boolean actual = gamePlay.getFlag();
+//
+//        Assert.assertEquals(expected, actual);
 //    }
 
 }
