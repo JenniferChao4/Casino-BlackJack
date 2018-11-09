@@ -12,5 +12,7 @@ public class Test {
         Craps game1 = new Craps(Crappy);
 
         game1.gamePlay();
+
+
     }
 }
