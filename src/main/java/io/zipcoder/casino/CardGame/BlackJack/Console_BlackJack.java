@@ -14,13 +14,13 @@ public class Console_BlackJack {
 
     public static void finalGoodbye(Player player) {
         if (player.getWallet() < 0) {
-            System.out.println("Hey!! You still owe us $" + (player.getWallet() * -1) + "!!");
+            System.out.println("\nHey!! You still owe us $" + (player.getWallet() * -1) + "!!");
+        } else {
+            System.out.println("\nThanks for coming to Thunder Theta, good bye!");
         }
-
-        System.out.println("\nThanks for coming to Thunder Theta, good bye!");
     }
 
-    public static void blackJackWelcome(){
+    public static void blackJackWelcome() {
         System.out.println("\nHi! Welcome to BlackJack!\n\nThe minimum bet is $50.");
     }
 
@@ -40,23 +40,24 @@ public class Console_BlackJack {
     }
 
     public static void winOrLose(BlackJackPlayer blackJackPlayer, char result) {
-            switch (result) {
-                case '+':
-                    System.out.println("\nYou Won: $" + blackJackPlayer.getBetPot() + "\nCurrent Wallet: $" + blackJackPlayer.getPlayer().getWallet());
-                    break;
-                case '-':
-                    System.out.println("\nYou Lost: $" + blackJackPlayer.getBetPot() + "\nCurrent Wallet: $" + blackJackPlayer.getPlayer().getWallet());
-                    break;
-                default:
-                    System.out.println("\nTie Game.\n\nCurrent Wallet: $" + blackJackPlayer.getPlayer().getWallet());
-                    break;}
+        switch (result) {
+            case '+':
+                System.out.println("\nYou Won: $" + blackJackPlayer.getBetPot() + "\nCurrent Wallet: $" + blackJackPlayer.getPlayer().getWallet());
+                break;
+            case '-':
+                System.out.println("\nYou Lost: $" + blackJackPlayer.getBetPot() + "\nCurrent Wallet: $" + blackJackPlayer.getPlayer().getWallet());
+                break;
+            default:
+                System.out.println("\nTie Game.\n\nCurrent Wallet: $" + blackJackPlayer.getPlayer().getWallet());
+                break;
+        }
     }
 
-    public static void doubleDownBet(BlackJackPlayer blackJackPlayer){
+    public static void doubleDownBet(BlackJackPlayer blackJackPlayer) {
         System.out.println("\n~~~~~~~~~~~~~~~~~~~\n\nNEW BET: " + blackJackPlayer.getBetPot());
     }
 
-    public static void hitCard(BlackJackPlayer blackJackPlayer, Card card){
+    public static void hitCard(BlackJackPlayer blackJackPlayer, Card card) {
         if (blackJackPlayer.getPlayer().getName().equals("Dealer")) {
             System.out.println("\n~~~~~~~~~~~~~~~~~~~\n\nDealer Hit: " + card.toString());
             System.out.println("\n~~~~~~~~~~~~~~~~~~~\n\nDealer's Current Hand: \n\nMYSTERY-CARD || " + formatHand(blackJackPlayer.getDealerHand()) + "\n\nDealer's Hand Value: ??");
@@ -83,7 +84,7 @@ public class Console_BlackJack {
         return Console.getStringInput("\n~~~~~~~~~~~~~~~~~~~\n\nWould you like to play again?\n\n<< Yes - No >>").toUpperCase();
     }
 
-    public static int getPlayerBet(){
+    public static int getPlayerBet() {
         return Console.getIntInput("\n~~~~~~~~~~~~~~~~~~~\n\nHow much would you like to bet?");
     }
 
