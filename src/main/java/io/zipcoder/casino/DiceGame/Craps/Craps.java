@@ -48,13 +48,14 @@ public class Craps extends DiceGame implements Gamble {
         System.out.println("Are you ready to roll?  yes or no");
         String response = scanner.next();
         if (response.equalsIgnoreCase("yes")) {
+            firstRoll();
+            remainingRolls();
         } else if (response.equalsIgnoreCase("no")) {
-            gamePlay();
+            // gamePlay();
+            end();
         } else {
             System.out.println("no valid");
         }
-        firstRoll();
-        remainingRolls();
     }
 
     public int rollDice() {
@@ -81,6 +82,14 @@ public class Craps extends DiceGame implements Gamble {
         System.out.println("Are you ready to roll?  yes or no");
         String response = scanner.next();
         if (response.equalsIgnoreCase("yes")) {
+            int result = rollDice();
+            if (result == pointer) {
+                win(crapsPlayer);
+            } else if (result == 7) {
+                lose(crapsPlayer);
+            } else {
+                remainingRolls();
+            }
         } else if (response.equalsIgnoreCase("no")) {
             System.out.println("would you like to exit?");
             String response2 = scanner.next();
@@ -93,24 +102,17 @@ public class Craps extends DiceGame implements Gamble {
         } else {
             System.out.println("not valid");
         }
-        int result = rollDice();
-        if (result == pointer) {
-            win(crapsPlayer);
-        } else if (result == 7) {
-            lose(crapsPlayer);
-        } else
-            remainingRolls();
     }
 
+    public int getRollResult()
+    {
+        return this.result;
+    }
 
     public int betAmount(int amount, Player player) {
         return amount;
     }
 
-    public int betAmount(int amount, CrapsPlayers crapsPlayers) {
-        crapsPlayers.addToBetPot(amount);
-        return betAmount(amount, crapsPlayers.getPlayer());
-    }
 
     public void win(CrapsPlayers crapsPlayers) {
         System.out.println("Congrats! You won: $" + crapsPlayers.getInitialBet());
@@ -137,7 +139,6 @@ public class Craps extends DiceGame implements Gamble {
         } else {
             System.out.println("Sorry I didn't quite get that, try again!");
         }
-        end();
     }
 
     public void start() {
