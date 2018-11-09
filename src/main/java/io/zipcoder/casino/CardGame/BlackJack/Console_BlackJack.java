@@ -12,7 +12,11 @@ public class Console_BlackJack {
         System.out.println("\nThat's not a valid option, please try again.");
     }
 
-    public static void finalGoodbye() {
+    public static void finalGoodbye(Player player) {
+        if (player.getWallet() < 0) {
+            System.out.println("Hey!! You still owe us $" + (player.getWallet() * -1) + "!!");
+        }
+
         System.out.println("\nThanks for coming to Thunder Theta, good bye!");
     }
 

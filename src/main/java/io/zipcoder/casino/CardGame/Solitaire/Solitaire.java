@@ -17,10 +17,10 @@ import static io.zipcoder.casino.CardGame.Solitaire.Foundation.whichSuit;
 
 public class Solitaire extends CardGame {
 
-    public static void main(String[] args){
-        Solitaire s = new Solitaire(new Player("Bill"));
-        s.start();
-    }
+//    public static void main(String[] args){
+//        Solitaire s = new Solitaire(new Player("Bill"));
+//        s.start();
+//    }
     Console console = new Console(System.in, System.out);
 
     Scanner in = new Scanner(System.in);

@@ -55,6 +55,7 @@ package io.zipcoder.casino;
 import io.zipcoder.casino.CardGame.BlackJack.BlackJack;
 import io.zipcoder.casino.CardGame.BlackJack.BlackJackGameplay;
 import io.zipcoder.casino.CardGame.BlackJack.Console_BlackJack;
+import io.zipcoder.casino.CardGame.Solitaire.Solitaire;
 import io.zipcoder.casino.DiceGame.Craps.Craps;
 
 public final class Casino {
@@ -85,6 +86,9 @@ public final class Casino {
         while (flag) {
             switch (input) {
                 case "SOLITAIRE":
+                    Solitaire s = new Solitaire(new Player("Bill"));
+                    s.start();
+                    flag = false;
                     break;
                 case "BLACKJACK":
                     Console_BlackJack.blackJackWelcome(player);
@@ -97,7 +101,7 @@ public final class Casino {
                     flag = false;
                     break;
                 case "LEAVE":
-                    Console_BlackJack.finalGoodbye();
+                    Console_BlackJack.finalGoodbye(player);
                     flag = false;
                     break;
                 default:
