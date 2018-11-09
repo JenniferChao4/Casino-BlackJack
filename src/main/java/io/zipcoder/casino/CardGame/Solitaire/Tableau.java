@@ -37,7 +37,8 @@ public class Tableau {
                 unCover();
                 add(tempStack.pop());
             }
-        } else { lastTab.place(); }
+            lastTab.unCover();
+        } else { lastTab.stack.push(tempStack.pop()); }
     }
 
     //checks whether 'top' card of stack is opposite color and 1 above passed card

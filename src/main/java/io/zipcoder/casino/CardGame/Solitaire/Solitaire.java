@@ -12,6 +12,7 @@ import java.util.Stack;
 
 import static io.zipcoder.casino.CardGame.Card.toCard;
 import static io.zipcoder.casino.CardGame.Solitaire.Foundation.allFoundsFull;
+import static io.zipcoder.casino.CardGame.Solitaire.Foundation.cheatFoundations;
 import static io.zipcoder.casino.CardGame.Solitaire.Foundation.whichSuit;
 
 public class Solitaire extends CardGame {
@@ -47,6 +48,18 @@ public class Solitaire extends CardGame {
     }
 
     public static Deck solitaireDeck = new Deck();
+
+
+    public void start(){
+        System.out.println("Welcome");
+        resetDeck();
+        wastePile.removeAllElements();
+        tempStack.removeAllElements();
+        shuffle();
+        deal();
+        print();
+        takeATurn();
+    }
 
     public void shuffle(){
         solitaireDeck.shuffle();
@@ -97,8 +110,6 @@ public class Solitaire extends CardGame {
             case '8':
                 whichSuit(tempStack);
                 break;
-            case 'E': //develop way to replace original stack on pile. don't change coverage until placed. same with pulled from stack.
-                break;
             default:
                 System.out.println("Not a valid entry. Try again or press \'E\'");
                 dropToTab(in.next().charAt(0));
@@ -106,8 +117,8 @@ public class Solitaire extends CardGame {
     }
 
     public void pull(String cardCode){
-        char f = cardCode.charAt(0);
-        char s = cardCode.charAt(1);
+        char f = cardCode.toUpperCase().charAt(0);
+        char s = cardCode.toUpperCase().charAt(1);
         Card c = toCard(f,s);
         findTab(c).pull(c);
     }
@@ -121,30 +132,8 @@ public class Solitaire extends CardGame {
         return null;
     }
 
-    public void start(){
-        System.out.println("Welcome");
-        resetDeck();
-        wastePile.removeAllElements();
-        tempStack.removeAllElements();
-        shuffle();
-        deal();
-        print();
-        takeATurn();
-    }
-
-    public void end() {
-        System.out.println("Congratulations!");
-        System.out.println("Enter \'N\' to play again or press \'Q\' to quit");
-        String command = in.next().toUpperCase();
-        while (!command.equals("Q") || !command.equals("N")){
-            if (command.equals("Q")) end();
-            else if (command.equals("N")) start();
-            else System.out.println("Invalid. Enter \'N\' to play again or press \'Q\' to quit");
-        }
-    }
-
-    public String getInput(){
-        return in.next();
+    public void peekWaste(){
+        if(wastePile.size()>0) System.out.println(wastePile.peek());
     }
 
     //you've got a temp stack. so when you pull a card, show it. if it doesn't go, put it back.
@@ -153,33 +142,37 @@ public class Solitaire extends CardGame {
     //build console class for solitaire printouts
     public void takeATurn() {
             console.println("Ready? Let's Play");
-            while (!allFoundsFull()) {
+            while (!allFoundsFull() || !gameOver()) {
                 String command = console.getInputString("What now?");
                 switch (String.valueOf(command)) {
                     case "DRAW":
                         drawCard();
-                        console.println("\nYou just drew " + wastePile.peek());
+                        console.println("\nYou just drew " + wastePile.peek().toString2());
                         break;
                     case "P":
                         //try, catch, continue
                         try {
                             pickUp();
-                            console.println("\nYou just picked up " + tempStack.peek());
+                            console.println("\nYou just picked up " + tempStack.peek().toString2());
                             dropToTab(console.getDropTab().charAt(0));
                             print();
+                            peekWaste();
                             break;
                         } catch (EmptyStackException e) {
                             console.println("\nCan't pull from an empty draw pile");
                             break;
                         }
+                    case "QUIT":
+                        gameOver();
+                    case "FOO":
+                        cheatFoundations();
                     default:
                         pull(String.valueOf(command));
-                        console.println("\nYou just pulled" + tempStack.peek());
+                        console.println("\nYou just pulled" + tempStack.peek().toString2());
                         dropToTab(console.getDropTab().charAt(0));
                         print();
                         break;
                 }
-                if (allFoundsFull()) end();
             }
     }
 
@@ -189,12 +182,6 @@ public class Solitaire extends CardGame {
 
     public void removePlayer(Player player) {
 
-    }
-
-    public void moveable() {
-    }
-
-    public void receivable() {
     }
 
     public Card draw() {
@@ -208,27 +195,24 @@ public class Solitaire extends CardGame {
     public void print(){
         int i = 1;
         for (Tableau tab : arrayTabs) {
-            System.out.println("tab " + i); i++;
-            tab.stack.forEach(e -> System.out.println(e + " " + e.isCovered()));
+            System.out.println("\nCOLUMN " + i); i++;
+            tab.stack.forEach(e -> System.out.println(e.toString2() + " "));
         }
     }
 
-    public void printTest() {
-        int max = 0;
-        for (Tableau tab : arrayTabs) {
-            if (tab.size() > max) max = tab.size();
-        }
-        for (int j = 0; j < max; j++) {
-            for (int i = 0; i < arrayTabs.length; i++) {
-                while(arrayTabs[i].stack.iterator().hasNext())
-                if (arrayTabs[i].stack.iterator().hasNext()) {
-                    System.out.println("  xx  ");
-                } else {
-                    System.out.println("  OO  ");
-                }
-            }
-        }
+    public Boolean gameOver(){
+        if(console.getInputString("Are you sure you want to quit?\nEnter Y to quit").equals("Y")) return true;
+        return false;
     }
 
-
+    public void end() {
+        System.out.println("Congratulations!");
+        System.out.println("Enter \'N\' to play again or press \'Q\' to quit");
+        String command = in.next().toUpperCase();
+        while (!command.equals("Q") || !command.equals("N")){
+            if (command.equals("Q"));
+            else if (command.equals("N")) start();
+            else System.out.println("Invalid. Enter \'N\' to play again or press \'Q\' to quit");
+        }
+    }
 }
