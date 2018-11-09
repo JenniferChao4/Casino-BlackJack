@@ -6,7 +6,7 @@ import static io.zipcoder.casino.CardGame.Face.getFaceByValue;
 import static io.zipcoder.casino.CardGame.Suit.getSuitByValue;
 
 public class Card {
-
+//9D on 10S didn't work...
     private Suit suit;
     private boolean isBlack;
     private Face face;
@@ -23,9 +23,6 @@ public class Card {
 //    }
 
     public static Card toCard(char face, char suit){
-//        char s = suit.charAt(0);
-//        char f = face.charAt(0);
-//        return new Card(getSuitByValue(s), getFaceByValue(f));
         return new Card(getSuitByValue(suit), getFaceByValue(face));
     }
 
@@ -42,7 +39,7 @@ public class Card {
     }
 
     private void setBlack(){
-        if(this.getSuit().toString().equals("HEARTS") || this.getSuit().toString().equals("DIAMOND")) isBlack = false;
+        if(this.getSuit().toString().equals("HEARTS") || this.getSuit().toString().equals("DIAMONDS")) isBlack = false;
         else isBlack = true;
     }
 
@@ -72,6 +69,11 @@ public class Card {
     @Override
     public String toString(){
         return suit + "-" + face;
+    }
+
+    public String toString2(){
+        if (this.isCovered()) return "--";
+        else return "" + face.getTertiaryValue() + suit.getPrimaryValue();
     }
 
     @Override
