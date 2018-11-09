@@ -12,6 +12,7 @@ public class Slots {
             "Leon", "Wilhem", "WOW", "ZCW", "Sian", "Dan" , "Nancy", "Melanie", "Tariq", "Janelle" , "Jutta" };
 
     Casino casino = Casino.getInstance();
+    Player player = Casino.getPlayer();
 
     public Slots() {
         int bet;
@@ -21,15 +22,16 @@ public class Slots {
 
     public static void main(String[] args) {
 
-        Slots s = new Slots();
-        s.startSlots();
+//        Slots s = new Slots();
+//        s.startSlots();
 
 
     }
 
-    private void startSlots() {
+    public void startSlots() {
         String choice;
         int bet;
+        int pot;
         Scanner scan = new Scanner(System.in);
         System.out.println("What would you like to do?");
         System.out.println("Type -Play- or -Quit-:");
@@ -38,11 +40,14 @@ public class Slots {
         switch (choice) {
             case "quit" :
                 System.out.println("Goodbye");
-                Casino.chooseGame();
+                casino.chooseGame();
                 break;
             case "play" :
                 bet = placeYourBet();
+                player.setWallet(player.getWallet() - bet);
                 FillReels(bet);
+                // player.setWallet(player.getWallet() + pot);
+
                 break;
 
                 default:
@@ -110,6 +115,7 @@ public class Slots {
             System.out.println("\t\t\t\t\t\t\t\t\tYour bet:\t" + bet + "\tCHIPS");
             if (payOut > 0) {
                 System.out.println("\t\t\t\t\t\t\t\t\tYOU WON:\t" + payOut + "\tCHIPS");
+                player.setWallet(player.getWallet() + payOut);
             }
 
             startSlots();
