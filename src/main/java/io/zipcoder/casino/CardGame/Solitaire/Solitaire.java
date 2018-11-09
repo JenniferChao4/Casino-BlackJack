@@ -12,7 +12,6 @@ import java.util.Stack;
 
 import static io.zipcoder.casino.CardGame.Card.toCard;
 import static io.zipcoder.casino.CardGame.Solitaire.Foundation.allFoundsFull;
-import static io.zipcoder.casino.CardGame.Solitaire.Foundation.cheatFoundations;
 import static io.zipcoder.casino.CardGame.Solitaire.Foundation.whichSuit;
 
 public class Solitaire extends CardGame {
@@ -33,7 +32,6 @@ public class Solitaire extends CardGame {
     public Tableau[] arrayTabs;
     public static Stack<Card> tempStack = new Stack<>();
     public static Stack<Card> lastStack = null;
-    public Boolean ifFromWaste = false;
 
     public Solitaire(Player player) {
         this.player = player;
@@ -53,6 +51,7 @@ public class Solitaire extends CardGame {
 
     public void start(){
         System.out.println("Welcome");
+        help();
         resetDeck();
         wastePile.removeAllElements();
         tempStack.removeAllElements();
@@ -60,6 +59,10 @@ public class Solitaire extends CardGame {
         deal();
         print();
         takeATurn();
+    }
+
+    public void help(){
+        console.println("\n\nInstructions:\n%s\n%s\n%s\n%s\n%s\n%s\n\n","To draw a card, enter \'DRAW\'","To pick up card from draw pile, enter \'P\'","To place card on column, enter column number. If card goes into foundation, enter \'8\'","To pull card down, type in card code (i.e. \'7H\' for Seven of Hearts","To quit, enter \'QUIT\'", "If you need help, just enter 'HELP'");
     }
 
     public void shuffle(){
@@ -113,7 +116,7 @@ public class Solitaire extends CardGame {
                 whichSuit(tempStack);
                 break;
             default:
-                System.out.println("Not a valid entry. Try again or press \'E\'");
+                System.out.println("Not a valid entry. Try again");
                 dropToTab(in.next().charAt(0));
         }
     }
@@ -164,6 +167,9 @@ public class Solitaire extends CardGame {
                             console.println("\nCan't pull from an empty draw pile");
                             break;
                         }
+                    case "HELP":
+                        help();
+                        break;
                     case "QUIT":
                         gameOver();
 //                    case "FOO":
