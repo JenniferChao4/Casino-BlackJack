@@ -2,7 +2,7 @@ package io.zipcoder.casino;
 
 public class Player {
 
-    // cashmoney?
+
     private int wallet;
     private String name;
 

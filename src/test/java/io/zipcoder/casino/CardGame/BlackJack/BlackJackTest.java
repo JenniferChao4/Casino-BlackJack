@@ -4,6 +4,7 @@ import io.zipcoder.casino.CardGame.Card;
 import io.zipcoder.casino.CardGame.Deck;
 import io.zipcoder.casino.CardGame.Face;
 import io.zipcoder.casino.CardGame.Suit;
+import io.zipcoder.casino.Casino;
 import io.zipcoder.casino.Player;
 import org.junit.Assert;
 import org.junit.Test;
@@ -150,7 +151,7 @@ public class BlackJackTest {
         ArrayList<Integer> expected = new ArrayList<>();
         expected.add(total_aceEqualsOne);
         expected.add(total_aceEqualsEleven);
-        ArrayList<Integer>  actual = blackJack.countPlayerHand(testPlayer);
+        ArrayList<Integer> actual = blackJack.countPlayerHand(testPlayer);
 
         Assert.assertEquals(expected, actual);
     }
@@ -169,7 +170,7 @@ public class BlackJackTest {
 
         ArrayList<Integer> expected = new ArrayList<>();
         expected.add(total_aceEqualsOne);
-        ArrayList<Integer>  actual = blackJack.countPlayerHand(testPlayer);
+        ArrayList<Integer> actual = blackJack.countPlayerHand(testPlayer);
 
         Assert.assertEquals(expected, actual);
     }
@@ -188,7 +189,7 @@ public class BlackJackTest {
 
         ArrayList<Integer> expected = new ArrayList<>();
         expected.add(total);
-        ArrayList<Integer>  actual = blackJack.countPlayerHand(testPlayer);
+        ArrayList<Integer> actual = blackJack.countPlayerHand(testPlayer);
 
         Assert.assertEquals(expected, actual);
     }
@@ -226,30 +227,10 @@ public class BlackJackTest {
         Assert.assertEquals(expected, actual);
     }
 
-
-
-
-
-
-
-
-
-
-
-
-
-//    @Test
-//    public void testAskForBet(){
-//        gamePlay.askForBet(testPlayer);
-//
-//        int expected = 50;
-//        int actual = testPlayer.getBetPot();
-//
-//        Assert.assertEquals(expected, actual);
-//    }
+ //////////// keep having trouble with creating new test class (intellij auto-downloads junit 5.2 instead
 
     @Test
-    public void testDetermineActivePlayer_isPlayer(){
+    public void testDetermineActivePlayer_isPlayer() {
         gamePlay.setTurnNumber(2);
 
         gamePlay.determineActivePlayer(blackJack);
@@ -262,7 +243,7 @@ public class BlackJackTest {
     }
 
     @Test
-    public void testDetermineActivePlayer_isDealer(){
+    public void testDetermineActivePlayer_isDealer() {
         gamePlay.setTurnNumber(3);
 
         gamePlay.determineActivePlayer(blackJack);
@@ -275,7 +256,7 @@ public class BlackJackTest {
     }
 
     @Test
-    public void testCheckFirstTurnWin_Dealer(){
+    public void testCheckFirstTurnWin_Dealer() {
         gamePlay.getDealer().setHandValue(21);
         testPlayer.setBetPot(50);
 
@@ -288,7 +269,7 @@ public class BlackJackTest {
     }
 
     @Test
-    public void testCheckFirstTurnWin_Player(){
+    public void testCheckFirstTurnWin_Player() {
         testPlayer.setHandValue(21);
         testPlayer.setBetPot(50);
 
@@ -301,7 +282,7 @@ public class BlackJackTest {
     }
 
     @Test
-    public void testTwoStands_PlayerWin(){
+    public void testTwoStands_PlayerWin() {
         testPlayer.setHandValue(20);
         blackJack.getDealer().setHandValue(17);
         testPlayer.setBetPot(50);
@@ -314,7 +295,7 @@ public class BlackJackTest {
     }
 
     @Test
-    public void testTwoStands_PlayerLoss(){
+    public void testTwoStands_PlayerLoss() {
         testPlayer.setHandValue(17);
         blackJack.getDealer().setHandValue(20);
         testPlayer.setBetPot(50);
@@ -327,7 +308,19 @@ public class BlackJackTest {
     }
 
     @Test
-    public void testDealerTurn(){
+    public void testTwoStands_PlayerTie() {
+        testPlayer.setHandValue(17);
+        blackJack.getDealer().setHandValue(17);
+        gamePlay.twoStands(testPlayer);
+
+        boolean expected = false;
+        boolean actual = gamePlay.getFlag();
+
+        Assert.assertEquals(expected, actual);
+    }
+
+    @Test
+    public void testDealerTurn() {
         blackJack.getDealer().setHandValue(20);
         gamePlay.dealerTurn();
 
@@ -338,7 +331,7 @@ public class BlackJackTest {
     }
 
     @Test
-    public void testDealerTurn2(){
+    public void testDealerTurn2() {
         gamePlay.dealerTurn();
         gamePlay.dealerTurn();
 
@@ -349,7 +342,7 @@ public class BlackJackTest {
     }
 
     @Test
-    public void testDealerTurn_Turn(){
+    public void testDealerTurn_Turn() {
         gamePlay.setTurnNumber(5);
 
         gamePlay.dealerTurn();
@@ -360,17 +353,164 @@ public class BlackJackTest {
         Assert.assertEquals(expected, actual);
     }
 
+    @Test
+    public void testDealerHitResult_DealerLoss() {
+        blackJack.getDealer().setHandValue(22);
+        gamePlay.dealerHitResult();
 
-//    @Test
-//    public void testDealerTurn_Turn(){
-//        gamePlay.setTurnNumber(5);
+        boolean expected = false;
+        boolean actual = gamePlay.getFlag();
+
+        Assert.assertEquals(expected, actual);
+    }
+
+    @Test
+    public void testDealerHitResult_DealerWin() {
+        blackJack.getDealer().setHandValue(21);
+        gamePlay.dealerHitResult();
+
+        boolean expected = false;
+        boolean actual = gamePlay.getFlag();
+
+        Assert.assertEquals(expected, actual);
+    }
+
+    @Test
+    public void testDealerHitResult_DealerStand() {
+        blackJack.getDealer().setHandValue(16);
+        gamePlay.dealerHitResult();
+
+        boolean expected = true;
+        boolean actual = gamePlay.getFlag();
+
+        Assert.assertEquals(expected, actual);
+    }
+
+    @Test
+    public void testPlayerChoice_Hit() {
+        Card ace = new Card(Suit.HEARTS, Face.ACE);
+        Card two = new Card(Suit.HEARTS, Face.TWO);
+
+        testHand.add(ace);
+        testHand.add(two);
+        gamePlay.playerChoice("HIT");
+
+        int expected = 3;
+        int actual = testPlayer.getPlayerHand().size();
+
+        Assert.assertEquals(expected, actual);
+    }
+
+    @Test
+    public void testPlayerChoice_Stand() {
+        gamePlay.playerChoice("stand");
+
+        int expected = 1;
+        int actual = gamePlay.getStands();
+
+        Assert.assertEquals(expected, actual);
+    }
+
+    @Test
+    public void testPlayerChoice_DD() {
+        testPlayer.setInitialBet(50);
+        testPlayer.setBetPot(50);
+        blackJack.setJustDealt(true);
+        gamePlay.playerChoice("double DOWN");
+
+        int expected = 100;
+        int actual = testPlayer.getBetPot();
+
+        Assert.assertEquals(expected, actual);
+    }
+
+    @Test
+    public void testHitResult_Win() {
+        testPlayer.setHandValue(21);
+        testPlayer.setBetPot(50);
+        gamePlay.hitResult(testPlayer);
+
+        int expected = 550;
+        int actual = testPlayer.getPlayer().getWallet();
+
+        Assert.assertEquals(expected, actual);
+    }
+
+    @Test
+    public void testHitResult_Lose() {
+        testPlayer.setHandValue(25);
+        testPlayer.setBetPot(50);
+        gamePlay.hitResult(testPlayer);
+
+        int expected = 450;
+        int actual = testPlayer.getPlayer().getWallet();
+
+        Assert.assertEquals(expected, actual);
+    }
+
+    @Test
+    public void testUpdateWallet() {
+        testPlayer.setBetPot(250);
+
+        gamePlay.updateWallet(1, '+');
+
+        int expected = 750;
+        int actual = testPlayer.getPlayer().getWallet();
+
+        Assert.assertEquals(expected, actual);
+    }
+
+    @Test
+    public void testResetGame_Hand() {
+        Card ace = new Card(Suit.HEARTS, Face.ACE);
+        Card two = new Card(Suit.HEARTS, Face.TWO);
+
+        testHand.add(ace);
+        testHand.add(two);
+        gamePlay.resetGame();
+
+        int expected = 0;
+        int actual = testPlayer.getPlayerHand().size();
+
+        Assert.assertEquals(expected, actual);
+    }
+
+    @Test
+    public void testResetGame_BetPot() {
+        testPlayer.setBetPot(999999999);
+        gamePlay.resetGame();
+
+        int unexpected = 999999999;
+        int actual = testPlayer.getBetPot();
+
+        Assert.assertNotEquals(unexpected, actual);
+    }
+
+
+    @Test
+    public void testResetGame_Stand(){
+        gamePlay.setStands(10);
+        gamePlay.resetGame();
+
+        int expected = 0;
+        int actual = gamePlay.getStands();
+
+        Assert.assertEquals(expected, actual);
+    }
+
+    //    @Test
+//    public void testAskForBet(){
+//        gamePlay.askForBet(testPlayer);
 //
-//        gamePlay.dealerTurn();
-//
-//        int expected = 6;
-//        int actual = gamePlay.getTurnNumber();
+//        int expected = 50;
+//        int actual = testPlayer.getBetPot();
 //
 //        Assert.assertEquals(expected, actual);
+//    }
+
+//    @Test
+//    public void testPlayAgain(){
+//        gamePlay.askPlayAgain();
 //    }
 
 }

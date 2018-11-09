@@ -4,7 +4,7 @@ import io.zipcoder.casino.CardGame.Card;
 import io.zipcoder.casino.CardGame.CardGame;
 import io.zipcoder.casino.CardGame.Deck;
 import io.zipcoder.casino.CardGame.Face;
-import io.zipcoder.casino.Casino_test;
+import io.zipcoder.casino.Casino;
 import io.zipcoder.casino.Interfaces.Gamble;
 import io.zipcoder.casino.Player;
 
@@ -14,7 +14,7 @@ import java.util.Scanner;
 public class BlackJack extends CardGame implements Gamble {
 
     private BlackJackPlayer blackJackPlayer;
-    // Player player;
+    private Casino casino = Casino.getInstance();
     private ArrayList<BlackJackPlayer> blackJackPlayers = new ArrayList<>();
     private final int minBet = 50;
     private Deck deck = new Deck();
@@ -152,14 +152,7 @@ public class BlackJack extends CardGame implements Gamble {
     }
 
     public void end() {
-
-    }
-
-    public void takeATurn() {
-    }
-
-    // add to game interface?
-    public void endTurn() {
+        casino.chooseGame();
     }
 
     public void addPlayer(Player player) {
@@ -187,10 +180,6 @@ public class BlackJack extends CardGame implements Gamble {
 
     public int betAmount(int amount, Player player) {
         return amount;
-    }
-
-    public void distributePot(int amount, Player player) {
-
     }
 
     public boolean getJustDealt() {
