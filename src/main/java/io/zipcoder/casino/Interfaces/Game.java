@@ -7,7 +7,7 @@ public interface Game {
 
     void end();
 
-    void takeATurn();
+//    void takeATurn();
 
     void addPlayer(Player player);
 

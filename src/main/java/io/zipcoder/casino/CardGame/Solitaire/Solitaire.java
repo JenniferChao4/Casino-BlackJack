@@ -3,6 +3,7 @@ package io.zipcoder.casino.CardGame.Solitaire;
 import io.zipcoder.casino.CardGame.Card;
 import io.zipcoder.casino.CardGame.CardGame;
 import io.zipcoder.casino.CardGame.Deck;
+import io.zipcoder.casino.Casino;
 import io.zipcoder.casino.Console;
 import io.zipcoder.casino.Player;
 
@@ -11,16 +12,15 @@ import java.util.Scanner;
 import java.util.Stack;
 
 import static io.zipcoder.casino.CardGame.Card.toCard;
-import static io.zipcoder.casino.CardGame.Solitaire.Foundation.allFoundsFull;
-import static io.zipcoder.casino.CardGame.Solitaire.Foundation.cheatFoundations;
-import static io.zipcoder.casino.CardGame.Solitaire.Foundation.whichSuit;
+import static io.zipcoder.casino.CardGame.Solitaire.Foundation.*;
 
 public class Solitaire extends CardGame {
 
-    public static void main(String[] args){
-        Solitaire s = new Solitaire(new Player("Bill"));
-        s.start();
-    }
+//    public static void main(String[] args){
+//        Solitaire s = new Solitaire(new Player("Bill"));
+//        s.start();
+//    }
+    Casino casino = Casino.getInstance();
     Console console = new Console(System.in, System.out);
 
     Scanner in = new Scanner(System.in);
@@ -33,7 +33,6 @@ public class Solitaire extends CardGame {
     public Tableau[] arrayTabs;
     public static Stack<Card> tempStack = new Stack<>();
     public static Stack<Card> lastStack = null;
-    public Boolean ifFromWaste = false;
 
     public Solitaire(Player player) {
         this.player = player;
@@ -53,13 +52,22 @@ public class Solitaire extends CardGame {
 
     public void start(){
         System.out.println("Welcome");
+        help();
         resetDeck();
         wastePile.removeAllElements();
         tempStack.removeAllElements();
+        clubStack.removeAllElements();
+        diamondStack.removeAllElements();
+        spadeStack.removeAllElements();
+        heartStack.removeAllElements();
         shuffle();
         deal();
         print();
         takeATurn();
+    }
+
+    public void help(){
+        console.println("\n\nInstructions:\n%s\n%s\n%s\n%s\n%s\n%s\n\n","To draw a card, enter \'DRAW\'","To pick up card from draw pile, enter \'P\'","To place card on column, enter column number. If card goes into foundation, enter \'8\'","To pull card down, type in card code (i.e. \'7H\' for Seven of Hearts","To quit, enter \'QUIT\'", "If you need help, just enter 'HELP'");
     }
 
     public void shuffle(){
@@ -113,7 +121,7 @@ public class Solitaire extends CardGame {
                 whichSuit(tempStack);
                 break;
             default:
-                System.out.println("Not a valid entry. Try again or press \'E\'");
+                System.out.println("Not a valid entry. Try again");
                 dropToTab(in.next().charAt(0));
         }
     }
@@ -164,6 +172,9 @@ public class Solitaire extends CardGame {
                             console.println("\nCan't pull from an empty draw pile");
                             break;
                         }
+                    case "HELP":
+                        help();
+                        break;
                     case "QUIT":
                         gameOver();
 //                    case "FOO":
@@ -219,12 +230,12 @@ public class Solitaire extends CardGame {
         if (Foundation.heartStack.size() == 0){
             System.out.print("  --  \t\t");
         } else {
-            System.out.print("  " + Foundation.heartStack.peek().toString2() + "  \t");
+            System.out.print("  " + Foundation.heartStack.peek().toString2() + "  \t\t");
         }
         if (Foundation.spadeStack.size() == 0){
             System.out.println("  --  \t\t");
         } else {
-            System.out.print("  " + Foundation.spadeStack.peek().toString2() + "  \t\n");
+            System.out.print("  " + Foundation.spadeStack.peek().toString2() + "  \t\t\n");
         }
 
         int i = 1;
@@ -236,7 +247,8 @@ public class Solitaire extends CardGame {
     }
 
     public Boolean gameOver(){
-        if(console.getInputString("Are you sure you want to quit?\nEnter Y to quit").equals("Y")) return true;
+        casino.chooseGame();
+        //if(console.getInputString("Are you sure you want to quit?\nEnter Y to quit").equals("Y")) return true;
         return false;
     }
 

@@ -57,7 +57,7 @@ public class BlackJackPlayerTest {
         Assert.assertEquals(expected, actual);
     }
 
-    @Test (expected = IllegalStateException.class)
+    @Test(expected = IllegalStateException.class)
     public void testGetDealerHand_NotDealer() {
         testHand.add(deck.draw());
         testHand.add(deck.draw());
@@ -65,4 +65,17 @@ public class BlackJackPlayerTest {
 
         testPlayer.getDealerHand();
     }
+
+    @Test
+    public void testAddToBetPot() {
+
+        testPlayer.addToBetPot(50);
+
+        int expected = 50;
+        int actual = testPlayer.getBetPot();
+
+
+        Assert.assertEquals(expected, actual);
+    }
+
 }

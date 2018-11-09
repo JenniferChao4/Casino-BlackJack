@@ -34,10 +34,10 @@ public class Tableau {
     public void place(){
         if (this.canReceive(tempStack.peek())){
             while(tempStack.iterator().hasNext()){
-                unCover(lastStack);
                 add(tempStack.pop());
+                if (lastStack.size() > 0) unCover(lastStack);
             }
-            unCover(lastStack);
+            if (lastStack.size() > 0) unCover(lastStack);
         } else { lastStack.push(tempStack.pop()); }
     }
 
