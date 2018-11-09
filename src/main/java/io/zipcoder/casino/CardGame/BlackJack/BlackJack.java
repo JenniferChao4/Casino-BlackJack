@@ -13,20 +13,25 @@ import java.util.Scanner;
 
 public class BlackJack extends CardGame implements Gamble {
 
+    Casino_test instance = Casino_test.getInstance();
+    Player player = instance.getPlayer();
     private ArrayList<BlackJackPlayer> blackJackPlayers = new ArrayList<>();
     private final int minBet = 50;
-    private ArrayList<Card> wastepile = new ArrayList<>();
+   // private BlackJackGameplay gamePlay = new BlackJackGameplay();
     private Deck deck = new Deck();
     private boolean justDealt = false;
     private int numOfTurns = 0;
     private BlackJackPlayer dealer = new BlackJackPlayer(new Dealer());
-    int stands = 0;
+    private int stands = 0;
+    private BlackJackPlayer thePlayer;
 
+    public BlackJack(){}
 
     public BlackJack(Player player) {
         BlackJackPlayer blackJackPlayer = new BlackJackPlayer(player);
         blackJackPlayers.add(dealer);
         this.blackJackPlayers.add(blackJackPlayer);
+        this.thePlayer = blackJackPlayers.get(1);
         deck.shuffle();
     }
 
@@ -35,7 +40,6 @@ public class BlackJack extends CardGame implements Gamble {
         Card card = deck.draw();
         player.addToHand(card);
         countPlayerHand(player);
-
 
         if (player == blackJackPlayers.get(1)) {
             System.out.println("\n~~~~~~~~~~~~~~~~~~~\n\nYou Hit: " + card.toString());
@@ -95,6 +99,7 @@ public class BlackJack extends CardGame implements Gamble {
         return aceIsEleven;
     }
 
+    // REFACTOR THIS!!!!
     public ArrayList<Integer> countPlayerHand(BlackJackPlayer player) {
         ArrayList<Integer> handSum = new ArrayList<>();
         Integer aceIsOne;
@@ -150,7 +155,8 @@ public class BlackJack extends CardGame implements Gamble {
     }
 
     public void start() {
-        BlackJackGameplay.start(blackJackPlayers.get(1).getPlayer());
+        BlackJackGameplay gamePlay = new BlackJackGameplay(player);
+        gamePlay.start(player);
     }
 
     public void end() {
@@ -184,7 +190,7 @@ public class BlackJack extends CardGame implements Gamble {
 
     public int betAmount(int amount, BlackJackPlayer blackJackPlayer) {
         blackJackPlayer.addToBetPot(amount);
-        return betAmount(amount, blackJackPlayer.getPlayer());
+        return amount;
     }
 
     public int betAmount(int amount, Player player) {
@@ -250,4 +256,7 @@ public class BlackJack extends CardGame implements Gamble {
         return stringHandValue;
     }
 
+    public BlackJackPlayer getThePlayer() {
+        return thePlayer;
+    }
 }

@@ -10,6 +10,7 @@ package io.zipcoder.casino;
 //
 
 import io.zipcoder.casino.CardGame.BlackJack.BlackJack;
+import io.zipcoder.casino.CardGame.BlackJack.BlackJackGameplay;
 import io.zipcoder.casino.DiceGame.Craps.Craps;
 import io.zipcoder.casino.CardGame.Solitaire.Solitaire;
 import io.zipcoder.casino.Interfaces.Game;
@@ -41,7 +42,7 @@ public final class Casino_test {
                     break;
                 case "BLACKJACK":
                     BlackJack blackJack = new BlackJack(player);
-                    System.out.println("\nHi " + instance.getPlayer().getName() + "! Welcome to BlackJack!\n\nThe minimum bet is $50.\n");
+                    System.out.println("\nHi " + player.getName() + "! Welcome to BlackJack!\n\nThe minimum bet is $50.\n");
                     flag = false;
                     blackJack.start();
                     break;
@@ -56,6 +57,7 @@ public final class Casino_test {
                     break;
                 default:
                     System.out.println("I don't know what that game is. Please try again.");
+                    instance.chooseGame();
                     break;
             }
         }
