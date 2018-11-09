@@ -5,6 +5,7 @@ import io.zipcoder.casino.CardGame.Card;
 import java.util.Stack;
 
 import static io.zipcoder.casino.CardGame.Solitaire.Solitaire.tempStack;
+import static io.zipcoder.casino.CardGame.Solitaire.Solitaire.lastTab;
 
 public class Tableau {
     //consider making an undo method.
@@ -23,17 +24,10 @@ public class Tableau {
         stack.push(c);
     }
 
-    //need to preface with a find stack method. maybe at higher level that feeds into this.stack
-    // - so that player doesn't have to select the stack, he can just type in card to place onto.
-
-    //c = the top card of the subStack you want to pull - ex. 6D, 5C, 4H, 3S, 2D, AS; if pulling 4H and down, c = 4H.
-    public Stack<Card> pull(Card c){
-        if(this.stack.contains(c)){
-            while(!stack.peek().equals(c))  tempStack.push(stack.pop());
-            tempStack.push(stack.pop());
-            }
-        unCover();
-        return tempStack;
+    //c = the top card of the subStack you want to pull - ex. 6D, 5C, 4H, 3S, 2D, AS; if you want to pull 4H and down, c = 4H.
+    public void pull(Card c){
+        while(!stack.peek().equals(c))  tempStack.push(stack.pop());
+        tempStack.push(stack.pop());
         }
 
     //does not need parameter. with a stack representing each column, will simply call 'stack'.place() to drop the tempStack on top of it.
@@ -43,7 +37,7 @@ public class Tableau {
                 unCover();
                 add(tempStack.pop());
             }
-        }
+        } else { lastTab.place(); }
     }
 
     //checks whether 'top' card of stack is opposite color and 1 above passed card

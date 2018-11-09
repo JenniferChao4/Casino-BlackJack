@@ -6,6 +6,7 @@ import io.zipcoder.casino.CardGame.Deck;
 import io.zipcoder.casino.Console;
 import io.zipcoder.casino.Player;
 
+import java.util.EmptyStackException;
 import java.util.Scanner;
 import java.util.Stack;
 
@@ -19,6 +20,7 @@ public class Solitaire extends CardGame {
         Solitaire s = new Solitaire(new Player("Bill"));
         s.start();
     }
+    Console console = new Console(System.in, System.out);
 
     Scanner in = new Scanner(System.in);
     //clean up.
@@ -29,6 +31,7 @@ public class Solitaire extends CardGame {
     public Stack<Card> wastePile;
     public Tableau[] arrayTabs;
     public static Stack<Card> tempStack = new Stack<>();
+    public static Tableau lastTab = null;
 
     public Solitaire(Player player) {
         this.player = player;
@@ -41,13 +44,15 @@ public class Solitaire extends CardGame {
         tab6 = new Tableau();
         tab7 = new Tableau();
         arrayTabs = new Tableau[]{tab1, tab2, tab3, tab4, tab5, tab6, tab7};
-        start();
     }
 
     public static Deck solitaireDeck = new Deck();
 
-    public void deal() {
+    public void shuffle(){
         solitaireDeck.shuffle();
+    }
+
+    public void deal() {
         for (int i = 0; i < arrayTabs.length; i++) {
             for (int j = 0; j < arrayTabs.length; j++) {
                 if (j >= i) arrayTabs[j].add(draw());
@@ -92,15 +97,6 @@ public class Solitaire extends CardGame {
             case '8':
                 whichSuit(tempStack);
                 break;
-            case '9':
-                whichSuit(tempStack);
-                break;
-            case '0':
-                whichSuit(tempStack);
-                break;
-            case '-':
-                whichSuit(tempStack);
-                break;
             case 'E': //develop way to replace original stack on pile. don't change coverage until placed. same with pulled from stack.
                 break;
             default:
@@ -109,17 +105,19 @@ public class Solitaire extends CardGame {
         }
     }
 
-    public Stack<Card> pull(String cardCode){
+    public void pull(String cardCode){
         char f = cardCode.charAt(0);
         char s = cardCode.charAt(1);
         Card c = toCard(f,s);
-        return findTab(c).pull(c);
+        findTab(c).pull(c);
     }
 
     public Tableau findTab(Card c){
         for (Tableau tab : arrayTabs)
-            if (tab.stack.contains(c))
+            if (tab.stack.contains(c)) {
+                lastTab = tab;
                 return tab;
+            }
         return null;
     }
 
@@ -127,6 +125,8 @@ public class Solitaire extends CardGame {
         System.out.println("Welcome");
         resetDeck();
         wastePile.removeAllElements();
+        tempStack.removeAllElements();
+        shuffle();
         deal();
         print();
         takeATurn();
@@ -147,25 +147,40 @@ public class Solitaire extends CardGame {
         return in.next();
     }
 
+    //you've got a temp stack. so when you pull a card, show it. if it doesn't go, put it back.
+    //fix empty stack exceptions
+    //draw shouldn't reprint every time. only print top of wastePile
+    //build console class for solitaire printouts
     public void takeATurn() {
-        Console.println("Let's play");
-        while (!getInput().equals("QUIT") || !allFoundsFull()) {
-            if (Console.getInputString("Enter draw to draw a card").equals("DRAW")) {
-                drawCard();
-                print();
-                continue;
-            } else if (Console.getInputString("Enter draw to draw a card").equals("P")) {
-                pickUp();
-                dropToTab(getInput().charAt(0));
-                print();
-            } else if (Console.getInputString("Enter draw to draw a card").length() == 2) {
-                pull(String.valueOf(getInput()));
-                dropToTab(getInput().charAt(0));
-                print();
+            console.println("Ready? Let's Play");
+            while (!allFoundsFull()) {
+                String command = console.getInputString("What now?");
+                switch (String.valueOf(command)) {
+                    case "DRAW":
+                        drawCard();
+                        console.println("\nYou just drew " + wastePile.peek());
+                        break;
+                    case "P":
+                        //try, catch, continue
+                        try {
+                            pickUp();
+                            console.println("\nYou just picked up " + tempStack.peek());
+                            dropToTab(console.getDropTab().charAt(0));
+                            print();
+                            break;
+                        } catch (EmptyStackException e) {
+                            console.println("\nCan't pull from an empty draw pile");
+                            break;
+                        }
+                    default:
+                        pull(String.valueOf(command));
+                        console.println("\nYou just pulled" + tempStack.peek());
+                        dropToTab(console.getDropTab().charAt(0));
+                        print();
+                        break;
+                }
+                if (allFoundsFull()) end();
             }
-        }
-
-        if (allFoundsFull()) end();
     }
 
     public void addPlayer(Player player) {
@@ -191,12 +206,28 @@ public class Solitaire extends CardGame {
     }
 
     public void print(){
-        int i = 0;
+        int i = 1;
         for (Tableau tab : arrayTabs) {
             System.out.println("tab " + i); i++;
             tab.stack.forEach(e -> System.out.println(e + " " + e.isCovered()));
         }
-        if (wastePile.size() > 0) System.out.println("Top of Pile " + wastePile.peek());
+    }
+
+    public void printTest() {
+        int max = 0;
+        for (Tableau tab : arrayTabs) {
+            if (tab.size() > max) max = tab.size();
+        }
+        for (int j = 0; j < max; j++) {
+            for (int i = 0; i < arrayTabs.length; i++) {
+                while(arrayTabs[i].stack.iterator().hasNext())
+                if (arrayTabs[i].stack.iterator().hasNext()) {
+                    System.out.println("  xx  ");
+                } else {
+                    System.out.println("  OO  ");
+                }
+            }
+        }
     }
 
 

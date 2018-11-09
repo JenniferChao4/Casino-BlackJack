@@ -2,5 +2,8 @@ package io.zipcoder.casino;
 
 public class InputOutput {
 
-    // multiple users?
+    public static final Console console = new Console(System.in, System.out);
+
+
+
 }

@@ -93,7 +93,24 @@ public class SolitaireTest {
     }
 
     @Test
-    public void testStartGame() {
-        s.start();
+    public void testPull(){
+        s.resetDeck();
+        s.deal();
+        Card expected = s.tab1.stack.peek();
+        s.pull("KC");
+        Card actual = s.tempStack.peek();
+        Assert.assertEquals(expected,actual);
+    }
+
+    @Test
+    public void testPlace(){
+        s.resetDeck();
+        s.deal();
+        Card expected = s.tab1.stack.peek();
+        s.pull("KC");
+        s.dropToTab('2');
+        Card actual = s.tab2.stack.peek();
+        s.print();
+        Assert.assertEquals(expected,actual);
     }
 }
