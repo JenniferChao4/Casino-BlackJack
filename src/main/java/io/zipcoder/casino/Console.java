@@ -6,24 +6,24 @@ import java.util.Scanner;
 
 public class Console {
 
-    private static Scanner input;
-    private static PrintStream output;
+    private final Scanner input;
+    private final PrintStream output;
 
     public Console(InputStream in, PrintStream out) {
         this.input = new Scanner(in);
         this.output = out;
     }
 
-    public static void println(String prompt, Object... args) {
+    public void println(String prompt, Object... args) {
         output.format(prompt + "\n", args);
     }
 
-    public static String getInputString(String prompt, Object... args) {
+    public String getInputString(String prompt, Object... args) {
         println(prompt, args);
         return input.nextLine();
     }
 
-    public static Double getInputDouble(String prompt, Object... args) {
+    public Double getInputDouble(String prompt, Object... args) {
         String stringInput = getInputString(prompt, args);
         do {
             try {
@@ -35,7 +35,7 @@ public class Console {
         } while (true);
     }
 
-    public static Integer getInputInteger(String prompt, Object... args) {
+    public Integer getInputInteger(String prompt, Object... args) {
         return getInputDouble(prompt, args).intValue();
     }
 
@@ -50,6 +50,10 @@ public class Console {
         Scanner scanner = new Scanner(System.in);
         System.out.println(prompt);
         return scanner.nextInt();
+    }
+
+    public String getDropTab(){
+        return getInputString("To which row do you want to drop?");
     }
 
 }
