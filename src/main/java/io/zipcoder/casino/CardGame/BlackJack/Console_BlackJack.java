@@ -16,7 +16,7 @@ public class Console_BlackJack {
         if (player.getWallet() < 0) {
             System.out.println("\nHey!! You still owe us $" + (player.getWallet() * -1) + "!!");
         } else {
-            System.out.println("\nThanks for coming to Thunder Theta, good bye!");
+            System.out.println("\nThanks for coming to Thunder Theta! Your New Balance: $" + player.getWallet());
         }
     }
 
@@ -27,7 +27,7 @@ public class Console_BlackJack {
     public static String inGameMenu(BlackJack blackJack, BlackJackPlayer blackJackPlayer, BlackJackPlayer dealer) {
         String response = Console.getStringInput("\n~~~~~~~~~~~~~~~~~~~\n\nDealer's Current Hand: \n\nMYSTERY-CARD || " + formatHand(dealer.getDealerHand()) + "\n\nDealer's Hand Value: ??" +
                 "\n\n~~~~~~~~~~~~~~~~~~~\n\nYour Current Hand: \n\n" + formatHand(blackJackPlayer.getPlayerHand()) + "\n\nYour Hand Value: " + formatHandValue(blackJack.countPlayerHand(blackJackPlayer)) +
-                "\n\n~~~~~~~~~~~~~~~~~~~\n\nYOUR TURN" + "\n\n~~~~~~~~~~~~~~~~~~~\n\nWhat do you want to do?\n\n<< Hit - Stand - Double Down - Split - Quit >>").toUpperCase();
+                "\n\n~~~~~~~~~~~~~~~~~~~\n\nYOUR TURN" + "\n\n~~~~~~~~~~~~~~~~~~~\n\nWhat do you want to do?\n\n<< Hit - Stand - Double Down - Quit >>").toUpperCase();
         return response;
     }
 

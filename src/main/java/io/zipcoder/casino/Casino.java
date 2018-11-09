@@ -72,7 +72,7 @@ public final class Casino {
 
     public void chooseGame() {
         Player player = Casino.getPlayer();
-        String userInput = Console.getStringInput("\nWhat game would you like to play?\n\n<< BlackJack - Solitaire - Craps - Slots - Leave >>");
+        String userInput = Console.getStringInput("\nHi "+ player.getName() + "! What game would you like to play?\n\n<< BlackJack - Solitaire - Craps - Slots - Leave >>");
         String input = userInput.toUpperCase();
 
         boolean flag = true;

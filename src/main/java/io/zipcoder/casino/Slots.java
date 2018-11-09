@@ -5,28 +5,28 @@ import java.util.Scanner;
 public class Slots {
 
     String[] reels = new String[5];
-    String[] names = {"♡","♢", "♤",
-            "♧", "♬", "WIN", "♡","♢", "♤",
+    String[] names = {"♡", "♢", "♤",
+            "♧", "♬", "WIN", "♡", "♢", "♤",
             "♧", "♬", "Kris", "Nhu", "Froilan",
             "Dolio",
-            "Leon", "Wilhem", "WOW", "ZCW", "Sian", "Dan" , "Nancy", "Melanie", "Tariq", "Janelle" , "Jutta" };
+            "Leon", "Wilhem", "WOW", "ZCW", "Sian", "Dan", "Nancy", "Melanie", "Tariq", "Janelle", "Jutta"};
 
     Casino casino = Casino.getInstance();
-    Player player = Casino.getPlayer();
+    Player player;
 
     public Slots() {
         int bet;
         boolean flag = false;
-
+        this.player = Casino.getPlayer();
     }
 
-    public static void main(String[] args) {
-
-//        Slots s = new Slots();
-//        s.startSlots();
-
-
-    }
+//    public static void main(String[] args) {
+//
+////        Slots s = new Slots();
+////        s.startSlots();
+//
+//
+//    }
 
     public void startSlots() {
         String choice;
@@ -38,11 +38,11 @@ public class Slots {
         choice = scan.nextLine().toLowerCase();
 
         switch (choice) {
-            case "quit" :
+            case "quit":
                 System.out.println("Goodbye");
                 casino.chooseGame();
                 break;
-            case "play" :
+            case "play":
                 bet = placeYourBet();
                 player.setWallet(player.getWallet() - bet);
                 FillReels(bet);
@@ -50,8 +50,8 @@ public class Slots {
 
                 break;
 
-                default:
-                    startSlots();
+            default:
+                startSlots();
 
         }
 
@@ -66,61 +66,57 @@ public class Slots {
     }
 
 
-
     public void FillReels(int bet) {
         String choice;
 
-            int win = 0;
-            int zcw = 0;
+        int win = 0;
+        int zcw = 0;
 
-            int compareReelNum = 0;
-            int payOut;
-            printScreen1();
-            System.out.print("///\t\t\t|");
-            for (int i = 0; i < reels.length; i++) {
-                reels[i] = names[(int) (Math.random() * 26)];
+        int compareReelNum = 0;
+        int payOut;
+        printScreen1();
+        System.out.print("///\t\t\t|");
+        for (int i = 0; i < reels.length; i++) {
+            reels[i] = names[(int) (Math.random() * 26)];
 
-                if (i > 0) {
-                    if (reels[i] == reels[i - 1]) {
-                        compareReelNum++;
-                    }
-                }
-
-                if (reels[i] == "WIN") {
-                    win++;
-                }
-                if (reels[i] == "ZCW") {
-                    zcw++;
-                }
-
-                System.out.printf("| %8s |", reels[i]);
-                try {
-                    Thread.sleep(1000);
-                }
-
-                catch (Exception e) {
-
-                }
-
-                if (i == reels.length - 1) {
-                    System.out.println("|\t\t|\t\t///\t | |");
+            if (i > 0) {
+                if (reels[i] == reels[i - 1]) {
+                    compareReelNum++;
                 }
             }
 
-            printScreen2();
-
-
-            payOut = amountWon(bet, win, zcw, compareReelNum);
-
-            System.out.println("\t\t\t\t\t\t\t\t\tYour bet:\t" + bet + "\tCHIPS");
-            if (payOut > 0) {
-                System.out.println("\t\t\t\t\t\t\t\t\tYOU WON:\t" + payOut + "\tCHIPS");
-                player.setWallet(player.getWallet() + payOut);
+            if (reels[i] == "WIN") {
+                win++;
+            }
+            if (reels[i] == "ZCW") {
+                zcw++;
             }
 
-            startSlots();
+            System.out.printf("| %8s |", reels[i]);
+            try {
+                Thread.sleep(1000);
+            } catch (Exception e) {
+
+            }
+
+            if (i == reels.length - 1) {
+                System.out.println("|\t\t|\t\t///\t | |");
+            }
         }
 
+        printScreen2();
+
+
+        payOut = amountWon(bet, win, zcw, compareReelNum);
+
+        System.out.println("\t\t\t\t\t\t\t\t\tYour bet:\t" + bet + "\tCHIPS");
+        if (payOut > 0) {
+            System.out.println("\t\t\t\t\t\t\t\t\tYOU WON:\t" + payOut + "\tCHIPS");
+            player.setWallet(player.getWallet() + payOut);
+        }
+
+        startSlots();
+    }
 
 
     private int amountWon(int bet, int win, int zcw, int compareReelNum) {
@@ -130,8 +126,8 @@ public class Slots {
 
         int zcwTotal = ((bet * 5) * zcw);
 
-        if (compareReelNum == 4){
-             jackpot = 1000000;
+        if (compareReelNum == 4) {
+            jackpot = 1000000;
             System.out.println("YOU HIT THE JACKPOT!!!!!!");
 
         }
@@ -156,9 +152,9 @@ public class Slots {
         System.out.println("///		    |																	|	    ///__| | S   ");
         System.out.println("///		    |																	|	    ///____| P   ");
         System.out.println("///		    |___________________________________________________________________|	    ///      I   ");
-        System.out.println("///																	                    ///      N   ");																			///
-        System.out.println("///																                        ///");																			///
-        System.out.println(" /////    	 															            /////");																			///
+        System.out.println("///																	                    ///      N   ");                                                                            ///
+        System.out.println("///																                        ///");                                                                            ///
+        System.out.println(" /////    	 															            /////");                                                                            ///
         System.out.println("  //////////////////////////////////////////////////////////////////////////////////////");
         System.out.println("  /////////////////////////////////////////////////////////////////////////////////////");
         System.out.println("  /////////////////////////////////////////////////////////////////////////////////////");
