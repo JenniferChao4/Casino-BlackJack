@@ -13,7 +13,7 @@ public class Foundation {
     public static Stack<Card> diamondStack = new Stack<>();
     public static Stack<Card> heartStack = new Stack<>();
     public static Stack<Card> spadeStack = new Stack<>();
-    public static Stack<Card>[] foundArray = new Stack[4];
+    public static Boolean foundsFull = false;
 
     public Foundation() {
 
@@ -37,7 +37,7 @@ public class Foundation {
             }
         }
 
-        if (tempStackCard.peek().getSuit() == Suit.DIAMONDS) {
+        else if (tempStackCard.peek().getSuit() == Suit.DIAMONDS) {
 
             //Checks if the Diamonds Foundation is Empty
             if (diamondStack.empty() && tempStackCard.peek().getFace() == Face.ACE) {
@@ -49,7 +49,7 @@ public class Foundation {
             }
         }
 
-        if (tempStackCard.peek().getSuit() == Suit.HEARTS) {
+        else if (tempStackCard.peek().getSuit() == Suit.HEARTS) {
 
             //Checks if the Heart Foundation is Empty
             if (heartStack.empty() && tempStackCard.peek().getFace() == Face.ACE) {
@@ -61,7 +61,7 @@ public class Foundation {
             }
         }
 
-        if (tempStackCard.peek().getSuit() == Suit.SPADES) {
+        else if (tempStackCard.peek().getSuit() == Suit.SPADES) {
 
 
             if (spadeStack.empty() && tempStackCard.peek().getFace() == Face.ACE) {
@@ -74,19 +74,18 @@ public class Foundation {
     }
 
     public static Boolean allFoundsFull() {
+        if (foundsFull == true) return true;
+        return false;
+    }
+
+    public static void checkFoundsFull() {
         if (clubStack.size() == 13 && spadeStack.size() == 13
                 && heartStack.size() == 13  && diamondStack.size() == 13) {
-            System.out.println("Congratulations!");
-            return true;
+            foundsFull = true;
         }
-        else return false;
     }
 
     public static void cheatFoundations(){
-        for (Stack s : foundArray){
-            for(int i=0; i<(13-s.size());i++){
-                s.push(Card.toCard('A','S'));
-            }
+        foundsFull = true;
         }
-    }
 }

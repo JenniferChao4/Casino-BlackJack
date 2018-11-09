@@ -4,8 +4,8 @@ import io.zipcoder.casino.CardGame.Card;
 
 import java.util.Stack;
 
+import static io.zipcoder.casino.CardGame.Solitaire.Solitaire.lastStack;
 import static io.zipcoder.casino.CardGame.Solitaire.Solitaire.tempStack;
-import static io.zipcoder.casino.CardGame.Solitaire.Solitaire.lastTab;
 
 public class Tableau {
     //consider making an undo method.
@@ -34,11 +34,11 @@ public class Tableau {
     public void place(){
         if (this.canReceive(tempStack.peek())){
             while(tempStack.iterator().hasNext()){
-                unCover();
+                unCover(lastStack);
                 add(tempStack.pop());
             }
-            lastTab.unCover();
-        } else { lastTab.stack.push(tempStack.pop()); }
+            unCover(lastStack);
+        } else { lastStack.push(tempStack.pop()); }
     }
 
     //checks whether 'top' card of stack is opposite color and 1 above passed card
@@ -56,7 +56,7 @@ public class Tableau {
         } return false;
     }
 
-    private void unCover(){
-        if (size() > 0 && this.stack.peek().isCovered()) this.stack.peek().setCovered(false);
+    private void unCover(Stack<Card> lastStack){
+        if (size() > 0 && lastStack.peek().isCovered()) lastStack.peek().setCovered(false);
     }
 }

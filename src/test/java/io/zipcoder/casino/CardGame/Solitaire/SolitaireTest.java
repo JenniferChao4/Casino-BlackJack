@@ -10,30 +10,30 @@ import static io.zipcoder.casino.CardGame.Card.toCard;
 public class SolitaireTest {
     Solitaire s = new Solitaire(new Player("Murphy"));
 
-//    @Test
-//    public void testfind() {
-//        s.resetDeck();
-//        s.tab1.add(toCard("Ace", "Hearts"));
-//        s.tab2.add(toCard("five", "diamonds"));
-//
-//        System.out.println(s.findTab(toCard("Ace", "Hearts")).stack.peek());
-//    }
-//
-//    @Test
-//    public void testPull() {
-//        s.resetDeck();
-//        s.tab1.add(toCard("Ace", "Hearts"));
-//        s.tab2.add(toCard("five", "diamonds"));
-//
-//        Integer preSize = s.tab1.size();
-//        s.pull(toCard("Ace", "Hearts")); //main method tested
-//        Integer postSize = s.tab1.size();
-//
-//        Integer actual = preSize - postSize;
-//        Integer expected = 1;
-//
-//        Assert.assertEquals(expected, actual);
-//    }
+    @Test
+    public void testfind() {
+        s.resetDeck();
+        s.tab1.add(toCard('A', 'H'));
+        s.tab2.add(toCard('5', 'D'));
+
+        System.out.println(s.findTab(toCard('A', 'H')).stack.peek());
+    }
+
+    @Test
+    public void testPull2() {
+        s.resetDeck();
+        s.tab1.add(toCard('A', 'H'));
+        s.tab2.add(toCard('5', 'D'));
+
+        Integer preSize = s.tab1.size();
+        s.pull("AH"); //main method tested
+        Integer postSize = s.tab1.size();
+
+        Integer actual = preSize - postSize;
+        Integer expected = 1;
+
+        Assert.assertEquals(expected, actual);
+    }
 
     @Test
     public void drawCard() {

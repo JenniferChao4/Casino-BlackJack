@@ -32,7 +32,8 @@ public class Solitaire extends CardGame {
     public Stack<Card> wastePile;
     public Tableau[] arrayTabs;
     public static Stack<Card> tempStack = new Stack<>();
-    public static Tableau lastTab = null;
+    public static Stack<Card> lastStack = null;
+    public Boolean ifFromWaste = false;
 
     public Solitaire(Player player) {
         this.player = player;
@@ -81,6 +82,7 @@ public class Solitaire extends CardGame {
 
     public Stack<Card> pickUp(){
         tempStack.push(wastePile.pop());
+        lastStack = wastePile;
         return tempStack;
     }
 
@@ -126,14 +128,14 @@ public class Solitaire extends CardGame {
     public Tableau findTab(Card c){
         for (Tableau tab : arrayTabs)
             if (tab.stack.contains(c)) {
-                lastTab = tab;
+                lastStack = tab.stack;
                 return tab;
             }
         return null;
     }
 
     public void peekWaste(){
-        if(wastePile.size()>0) System.out.println(wastePile.peek());
+        if(wastePile.size()>0) System.out.println("\n\nDraw pile: " + wastePile.peek().toString2());
     }
 
     //you've got a temp stack. so when you pull a card, show it. if it doesn't go, put it back.
@@ -141,22 +143,22 @@ public class Solitaire extends CardGame {
     //draw shouldn't reprint every time. only print top of wastePile
     //build console class for solitaire printouts
     public void takeATurn() {
-            console.println("Ready? Let's Play");
+            console.println("\n\nReady? Let's Play");
             while (!allFoundsFull() || !gameOver()) {
-                String command = console.getInputString("What now?");
+                String command = console.getInputString("\nWhat now?");
                 switch (String.valueOf(command)) {
                     case "DRAW":
                         drawCard();
-                        console.println("\nYou just drew " + wastePile.peek().toString2());
+                        print();
+                        //console.println("\nDraw pile: " + wastePile.peek().toString2());
                         break;
                     case "P":
                         //try, catch, continue
                         try {
                             pickUp();
                             console.println("\nYou just picked up " + tempStack.peek().toString2());
-                            dropToTab(console.getDropTab().charAt(0));
+                                dropToTab(console.getDropTab().charAt(0));
                             print();
-                            peekWaste();
                             break;
                         } catch (EmptyStackException e) {
                             console.println("\nCan't pull from an empty draw pile");
@@ -164,12 +166,17 @@ public class Solitaire extends CardGame {
                         }
                     case "QUIT":
                         gameOver();
-                    case "FOO":
-                        cheatFoundations();
+//                    case "FOO":
+//                        cheatFoundations();
                     default:
-                        pull(String.valueOf(command));
-                        console.println("\nYou just pulled" + tempStack.peek().toString2());
-                        dropToTab(console.getDropTab().charAt(0));
+                        try {
+                            pull(String.valueOf(command));
+                            console.println("\nYou just pulled " + tempStack.peek().toString2());
+                            dropToTab(console.getDropTab().charAt(0));
+                        } catch (NullPointerException e) {
+                            console.println("Card does not exist. Try again :)\n");
+                            break;
+                        }
                         print();
                         break;
                 }
@@ -191,13 +198,41 @@ public class Solitaire extends CardGame {
     public void resetDeck(){
         solitaireDeck = new Deck();
     }
+    Foundation found = new Foundation();
 
     public void print(){
+        System.out.println("CLUBS\t\tDIAMONDS\t\tHEARTS\t\tSPADES");
+        System.out.println("------\t\t--------\t\t------\t\t------");
+
+        if (Foundation.clubStack.size() == 0){
+            System.out.print("  --  \t\t");
+        } else {
+            System.out.print("  " + Foundation.clubStack.peek().toString2() + "  \t\t");
+        }
+
+        if (Foundation.diamondStack.size() == 0){
+            System.out.print("   --  \t\t\t");
+        } else {
+            System.out.print("  " + Foundation.diamondStack.peek().toString2() + "  \t\t\t");
+        }
+
+        if (Foundation.heartStack.size() == 0){
+            System.out.print("  --  \t\t");
+        } else {
+            System.out.print("  " + Foundation.heartStack.peek().toString2() + "  \t");
+        }
+        if (Foundation.spadeStack.size() == 0){
+            System.out.println("  --  \t\t");
+        } else {
+            System.out.print("  " + Foundation.spadeStack.peek().toString2() + "  \t\n");
+        }
+
         int i = 1;
         for (Tableau tab : arrayTabs) {
             System.out.println("\nCOLUMN " + i); i++;
-            tab.stack.forEach(e -> System.out.println(e.toString2() + " "));
+            tab.stack.forEach(e -> System.out.print(e.toString2() + " " + "\t"));
         }
+        peekWaste();
     }
 
     public Boolean gameOver(){
