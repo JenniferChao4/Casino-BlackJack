@@ -3,6 +3,7 @@ package io.zipcoder.casino.CardGame.Solitaire;
 import io.zipcoder.casino.CardGame.Card;
 import io.zipcoder.casino.CardGame.CardGame;
 import io.zipcoder.casino.CardGame.Deck;
+import io.zipcoder.casino.Casino;
 import io.zipcoder.casino.Console;
 import io.zipcoder.casino.Player;
 
@@ -11,8 +12,7 @@ import java.util.Scanner;
 import java.util.Stack;
 
 import static io.zipcoder.casino.CardGame.Card.toCard;
-import static io.zipcoder.casino.CardGame.Solitaire.Foundation.allFoundsFull;
-import static io.zipcoder.casino.CardGame.Solitaire.Foundation.whichSuit;
+import static io.zipcoder.casino.CardGame.Solitaire.Foundation.*;
 
 public class Solitaire extends CardGame {
 
@@ -20,6 +20,7 @@ public class Solitaire extends CardGame {
 //        Solitaire s = new Solitaire(new Player("Bill"));
 //        s.start();
 //    }
+    Casino casino = Casino.getInstance();
     Console console = new Console(System.in, System.out);
 
     Scanner in = new Scanner(System.in);
@@ -55,6 +56,10 @@ public class Solitaire extends CardGame {
         resetDeck();
         wastePile.removeAllElements();
         tempStack.removeAllElements();
+        clubStack.removeAllElements();
+        diamondStack.removeAllElements();
+        spadeStack.removeAllElements();
+        heartStack.removeAllElements();
         shuffle();
         deal();
         print();
@@ -242,7 +247,8 @@ public class Solitaire extends CardGame {
     }
 
     public Boolean gameOver(){
-        if(console.getInputString("Are you sure you want to quit?\nEnter Y to quit").equals("Y")) return true;
+        casino.chooseGame();
+        //if(console.getInputString("Are you sure you want to quit?\nEnter Y to quit").equals("Y")) return true;
         return false;
     }
 
