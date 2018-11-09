@@ -63,8 +63,6 @@ public final class Casino {
     private final static Casino instance = new Casino();
 
     private Player player;
-    private BlackJack blackJack;
-    private BlackJackGameplay gamePlay;
 
     private String casinoName;
 
@@ -73,8 +71,6 @@ public final class Casino {
     public Casino(Player player) {
         this.casinoName = "Thunder Theta";
         this.player = player;
-        this.blackJack = new BlackJack(player);
-        this.gamePlay = new BlackJackGameplay(blackJack);
     }
 
     public void chooseGame() {
@@ -86,13 +82,15 @@ public final class Casino {
         while (flag) {
             switch (input) {
                 case "SOLITAIRE":
-                    Solitaire s = new Solitaire(new Player("Bill"));
+                    Solitaire s = new Solitaire(player);
                     s.start();
                     flag = false;
                     break;
                 case "BLACKJACK":
-                    Console_BlackJack.blackJackWelcome(player);
-                    gamePlay.start(player);
+                    BlackJack blackJack = new BlackJack(player);
+                    BlackJackGameplay blackJackGameplay = new BlackJackGameplay(blackJack);
+                    Console_BlackJack.blackJackWelcome();
+                    blackJackGameplay.start(player);
                     flag = false;
                     break;
                 case "CRAPS":

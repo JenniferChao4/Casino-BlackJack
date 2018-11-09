@@ -20,8 +20,8 @@ public class Console_BlackJack {
         System.out.println("\nThanks for coming to Thunder Theta, good bye!");
     }
 
-    public static void blackJackWelcome(Player player){
-        System.out.println("\nHi " + player.getName() + "! Welcome to BlackJack!\n\nThe minimum bet is $50.");
+    public static void blackJackWelcome(){
+        System.out.println("\nHi! Welcome to BlackJack!\n\nThe minimum bet is $50.");
     }
 
     public static String inGameMenu(BlackJack blackJack, BlackJackPlayer blackJackPlayer, BlackJackPlayer dealer) {

@@ -1,6 +1,7 @@
 package io.zipcoder.casino.DiceGame.Craps;
 
 import io.zipcoder.casino.CardGame.Solitaire.Tableau;
+import io.zipcoder.casino.Casino;
 import io.zipcoder.casino.Console;
 import io.zipcoder.casino.DiceGame.Dice;
 import io.zipcoder.casino.DiceGame.DiceGame;
@@ -15,8 +16,8 @@ import java.util.Scanner;
 public class Craps extends DiceGame implements Gamble {
     Scanner scanner;
 
-
-    int rollNumber = 0;
+    private Casino casino = Casino.getInstance();
+    private int rollNumber = 0;
     private CrapsPlayers crapsPlayer;
     private int minBet;
     private Player player;
@@ -24,8 +25,6 @@ public class Craps extends DiceGame implements Gamble {
     private int pointer;
     private int result;
     private int totalWin;
-
-
 
 
     public Craps(Player player) {
@@ -87,6 +86,7 @@ public class Craps extends DiceGame implements Gamble {
             String response2 = scanner.next();
             if (response2.equalsIgnoreCase("yes")) {
                 exitTable(crapsPlayer);
+                casino.chooseGame();
             } else if (response2.equalsIgnoreCase("no")) {
                 gamePlay();
             }
@@ -140,10 +140,6 @@ public class Craps extends DiceGame implements Gamble {
         end();
     }
 
-    public void distributePot(int amount, Player player) {
-
-    }
-
     public void start() {
         gamePlay();
     }
@@ -153,6 +149,7 @@ public class Craps extends DiceGame implements Gamble {
         String response = scanner.next();
         if (response.equalsIgnoreCase("yes")) {
             exitTable(crapsPlayer);
+            casino.chooseGame();
         } else if (response.equalsIgnoreCase("no")) {
             start();
         }
@@ -163,20 +160,12 @@ public class Craps extends DiceGame implements Gamble {
         removePlayer(player);
     }
 
-    public void takeATurn() {
-
-    }
-
     public int getPointer() {
         return pointer;
     }
 
     public void setPointer(int pointer) {
         this.pointer = pointer;
-    }
-
-    public int getRollResult() {
-        return result;
     }
 
     public void setResult(int result) {
@@ -198,7 +187,7 @@ public class Craps extends DiceGame implements Gamble {
         return crapsPlayer;
     }
 
-    public void displayWallet(){
+    public void displayWallet() {
         System.out.println("You have: $" + crapsPlayer.getWallet());
     }
 }
