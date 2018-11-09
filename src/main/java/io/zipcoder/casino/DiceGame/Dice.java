@@ -13,7 +13,7 @@ public class Dice {
 //        this.dice = new ArrayList<Dice>(numOfDice);
 //    }
 
-    public int rollDie() {
+    public static int rollDie() {
         return (int) Math.floor((Math.random() * 6) + 1);
     }
 
