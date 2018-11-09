@@ -9,7 +9,6 @@ import org.junit.Assert;
 import org.junit.Test;
 
 import java.util.ArrayList;
-import java.util.Scanner;
 
 public class BlackJackTest {
 
@@ -243,11 +242,10 @@ public class BlackJackTest {
 //    public void testAskForBet(){
 //        gamePlay.askForBet(testPlayer);
 //
-//        int expected = 100;
+//        int expected = 50;
 //        int actual = testPlayer.getBetPot();
 //
 //        Assert.assertEquals(expected, actual);
-//
 //    }
 
     @Test
@@ -303,14 +301,76 @@ public class BlackJackTest {
     }
 
     @Test
-    public void testIfPlayerActive() {
-        testHand.add(deck.draw());
-        testHand.add(deck.draw());
-        testHand.add(deck.draw());
-        System.out.println(testPlayer.getPlayerHand());
+    public void testTwoStands_PlayerWin(){
+        testPlayer.setHandValue(20);
+        blackJack.getDealer().setHandValue(17);
+        testPlayer.setBetPot(50);
+        gamePlay.twoStands(testPlayer);
 
-        gamePlay.setActivePlayer(testPlayer);
-        gamePlay.ifPlayerActive(testPlayer);
+        int expected = 550;
+        int actual = testPlayer.getPlayer().getWallet();
 
+        Assert.assertEquals(expected, actual);
     }
+
+    @Test
+    public void testTwoStands_PlayerLoss(){
+        testPlayer.setHandValue(17);
+        blackJack.getDealer().setHandValue(20);
+        testPlayer.setBetPot(50);
+        gamePlay.twoStands(testPlayer);
+
+        int expected = 450;
+        int actual = testPlayer.getPlayer().getWallet();
+
+        Assert.assertEquals(expected, actual);
+    }
+
+    @Test
+    public void testDealerTurn(){
+        blackJack.getDealer().setHandValue(20);
+        gamePlay.dealerTurn();
+
+        int expected = 1;
+        int actual = gamePlay.getStands();
+
+        Assert.assertEquals(expected, actual);
+    }
+
+    @Test
+    public void testDealerTurn2(){
+        gamePlay.dealerTurn();
+        gamePlay.dealerTurn();
+
+        int expected = 2;
+        int actual = gamePlay.getStands();
+
+        Assert.assertEquals(expected, actual);
+    }
+
+    @Test
+    public void testDealerTurn_Turn(){
+        gamePlay.setTurnNumber(5);
+
+        gamePlay.dealerTurn();
+
+        int expected = 6;
+        int actual = gamePlay.getTurnNumber();
+
+        Assert.assertEquals(expected, actual);
+    }
+
+
+//    @Test
+//    public void testDealerTurn_Turn(){
+//        gamePlay.setTurnNumber(5);
+//
+//        gamePlay.dealerTurn();
+//
+//        int expected = 6;
+//        int actual = gamePlay.getTurnNumber();
+//
+//        Assert.assertEquals(expected, actual);
+//    }
+
 }

@@ -13,11 +13,10 @@ import java.util.Scanner;
 
 public class BlackJack extends CardGame implements Gamble {
 
-    Casino_test instance = Casino_test.getInstance();
-    Player player = instance.getPlayer();
+    private BlackJackPlayer blackJackPlayer;
+    // Player player;
     private ArrayList<BlackJackPlayer> blackJackPlayers = new ArrayList<>();
     private final int minBet = 50;
-   // private BlackJackGameplay gamePlay = new BlackJackGameplay();
     private Deck deck = new Deck();
     private boolean justDealt = false;
     private BlackJackPlayer dealer = new BlackJackPlayer(new Dealer());
@@ -26,7 +25,7 @@ public class BlackJack extends CardGame implements Gamble {
     public BlackJack() {}
 
     public BlackJack(Player player) {
-        BlackJackPlayer blackJackPlayer = new BlackJackPlayer(player);
+        this.blackJackPlayer = new BlackJackPlayer(player);
         blackJackPlayers.add(dealer);
         this.blackJackPlayers.add(blackJackPlayer);
         this.thePlayer = blackJackPlayers.get(1);
@@ -39,12 +38,7 @@ public class BlackJack extends CardGame implements Gamble {
         player.addToHand(card);
         countPlayerHand(player);
 
-        if (player == blackJackPlayers.get(1)) {
-            System.out.println("\n~~~~~~~~~~~~~~~~~~~\n\nYou Hit: " + card.toString());
-        } else if (player == this.dealer) {
-            System.out.println("\n~~~~~~~~~~~~~~~~~~~\n\nDealer Hit: " + card.toString());
-        }
-
+        Console_BlackJack.hitCard(player, card);
     }
 
     public void split(BlackJackPlayer player) {
