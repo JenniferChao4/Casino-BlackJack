@@ -42,9 +42,10 @@ public final class Casino_test {
                     break;
                 case "BLACKJACK":
                     BlackJack blackJack = new BlackJack(player);
+                    BlackJackGameplay gamePlay = new BlackJackGameplay(blackJack);
                     System.out.println("\nHi " + player.getName() + "! Welcome to BlackJack!\n\nThe minimum bet is $50.\n");
                     flag = false;
-                    blackJack.start();
+                    gamePlay.start(player);
                     break;
                 case "CRAPS":
                     Craps craps = new Craps(player);

@@ -20,12 +20,10 @@ public class BlackJack extends CardGame implements Gamble {
    // private BlackJackGameplay gamePlay = new BlackJackGameplay();
     private Deck deck = new Deck();
     private boolean justDealt = false;
-    private int numOfTurns = 0;
     private BlackJackPlayer dealer = new BlackJackPlayer(new Dealer());
-    private int stands = 0;
     private BlackJackPlayer thePlayer;
 
-    public BlackJack(){}
+    public BlackJack() {}
 
     public BlackJack(Player player) {
         BlackJackPlayer blackJackPlayer = new BlackJackPlayer(player);
@@ -155,8 +153,8 @@ public class BlackJack extends CardGame implements Gamble {
     }
 
     public void start() {
-        BlackJackGameplay gamePlay = new BlackJackGameplay(player);
-        gamePlay.start(player);
+//        BlackJackGameplay gamePlay = new BlackJackGameplay();
+//        gamePlay.start(player);
     }
 
     public void end() {
@@ -207,53 +205,6 @@ public class BlackJack extends CardGame implements Gamble {
 
     public void setJustDealt(boolean justDealt) {
         this.justDealt = justDealt;
-    }
-
-    public int getStands() {
-        return stands;
-    }
-
-    public void setStands(int stands) {
-        this.stands = stands;
-    }
-
-    public int getNumOfTurns() {
-        return numOfTurns;
-    }
-
-    public void setNumOfTurns(int numOfTurns) {
-        this.numOfTurns = numOfTurns;
-    }
-
-    public String formatHand(ArrayList<Card> array) {
-        String stringHand = "";
-
-        String uglyArray = array.toString();
-
-        for (int i = 0; i < uglyArray.length(); i++) {
-            if (uglyArray.charAt(i) != ' ' && uglyArray.charAt(i) != '[' && uglyArray.charAt(i) != ']' && uglyArray.charAt(i) != ',') {
-                stringHand += uglyArray.charAt(i);
-            } else if (uglyArray.charAt(i) == ' ') {
-                stringHand += " || ";
-            }
-        }
-        return stringHand;
-    }
-
-    public String formatHandValue(ArrayList<Integer> array) {
-        String stringHandValue = "";
-
-        String uglyArray = array.toString();
-
-        for (int i = 0; i < uglyArray.length(); i++) {
-            if (uglyArray.charAt(i) != ' ' && uglyArray.charAt(i) != '[' && uglyArray.charAt(i) != ']' && uglyArray.charAt(i) != ',') {
-                stringHandValue += uglyArray.charAt(i);
-            } else if (uglyArray.charAt(i) == ' ') {
-                stringHandValue += " or ";
-            }
-        }
-
-        return stringHandValue;
     }
 
     public BlackJackPlayer getThePlayer() {

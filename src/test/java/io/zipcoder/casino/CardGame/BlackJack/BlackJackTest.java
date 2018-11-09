@@ -19,7 +19,7 @@ public class BlackJackTest {
     BlackJack blackJack = new BlackJack(player);
     BlackJackPlayer testPlayer = blackJack.getPlayer(1);
     ArrayList<Card> testHand = testPlayer.getPlayerHand();
-    BlackJackGameplay gamePlay = new BlackJackGameplay();
+    BlackJackGameplay gamePlay = new BlackJackGameplay(blackJack);
 
     @Test
     public void testHit() {
@@ -239,22 +239,22 @@ public class BlackJackTest {
 
 
 
-    @Test
-    public void testAskForBet(){
-        gamePlay.askForBet(testPlayer);
-
-        int expected = 100;
-        int actual = testPlayer.getBetPot();
-
-        Assert.assertEquals(expected, actual);
-
-    }
+//    @Test
+//    public void testAskForBet(){
+//        gamePlay.askForBet(testPlayer);
+//
+//        int expected = 100;
+//        int actual = testPlayer.getBetPot();
+//
+//        Assert.assertEquals(expected, actual);
+//
+//    }
 
     @Test
     public void testDetermineActivePlayer_isPlayer(){
         gamePlay.setTurnNumber(2);
 
-        gamePlay.determineActivePlayer(testPlayer);
+        gamePlay.determineActivePlayer(blackJack);
         BlackJackPlayer active = gamePlay.getActivePlayer();
 
         String expected = "Jack Black";
@@ -267,7 +267,7 @@ public class BlackJackTest {
     public void testDetermineActivePlayer_isDealer(){
         gamePlay.setTurnNumber(3);
 
-        gamePlay.determineActivePlayer(testPlayer);
+        gamePlay.determineActivePlayer(blackJack);
         BlackJackPlayer active = gamePlay.getActivePlayer();
 
         String expected = "Dealer";
@@ -281,7 +281,7 @@ public class BlackJackTest {
         gamePlay.getDealer().setHandValue(21);
         testPlayer.setBetPot(50);
 
-        gamePlay.checkFirstTurnWin(testPlayer);
+        gamePlay.checkFirstTurnWin(blackJack);
 
         int expected = 400;
         int actual = testPlayer.getPlayer().getWallet();
@@ -294,11 +294,23 @@ public class BlackJackTest {
         testPlayer.setHandValue(21);
         testPlayer.setBetPot(50);
 
-        gamePlay.checkFirstTurnWin(testPlayer);
+        gamePlay.checkFirstTurnWin(blackJack);
 
         int expected = 600;
         int actual = testPlayer.getPlayer().getWallet();
 
         Assert.assertEquals(expected, actual);
+    }
+
+    @Test
+    public void testIfPlayerActive() {
+        testHand.add(deck.draw());
+        testHand.add(deck.draw());
+        testHand.add(deck.draw());
+        System.out.println(testPlayer.getPlayerHand());
+
+        gamePlay.setActivePlayer(testPlayer);
+        gamePlay.ifPlayerActive(testPlayer);
+
     }
 }

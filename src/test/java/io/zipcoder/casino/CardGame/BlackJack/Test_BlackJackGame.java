@@ -42,13 +42,13 @@ public class Test_BlackJackGame {
 //            if (blackJack.getJustDealt()) {
 //                if (dealer.getHandValue() == 21) {
 //                    System.out.println("\n~~~~~~~~~~~~~~~~~~~\n\nDealer's Current Hand: \n\n" + blackJack.formatHand(dealer.getPlayerHand()) + "\n\nDealer's Hand Value: " + dealer.getHandValue() + "\n\n~~~~~~~~~~~~~~~~~~~\n\nBlackjack! Dealer wins!");
-//                    player.setWallet(player.getWallet() - (blackJackPlayer.getBetPot() * 2));
-//                    System.out.println("\nYou Lost $" + blackJackPlayer.getBetPot() * 2 + "\nCurrent Wallet: $" + player.getWallet());
+//                    player.setWallet(player.getWallet() - (betPot() * 2));
+//                    System.out.println("\nYou Lost $" + betPot() * 2 + "\nCurrent Wallet: $" + player.getWallet());
 //                    flag = false;
 //                } else if (blackJackPlayer.getHandValue() == 21) {
 //                    System.out.println("\n~~~~~~~~~~~~~~~~~~~\n\nYour Current Hand: \n\n" + blackJack.formatHand(blackJackPlayer.getPlayerHand()) + "\n\nYour Hand Value: " + blackJackPlayer.getHandValue() + "\n\n~~~~~~~~~~~~~~~~~~~\n\nBlackjack! Player wins!");
-//                    player.setWallet(player.getWallet() + (blackJackPlayer.getBetPot() * 2));
-//                    System.out.println("\nYou Won $" + blackJackPlayer.getBetPot() * 2 + "\nCurrent Wallet: $" + player.getWallet());
+//                    player.setWallet(player.getWallet() + (betPot() * 2));
+//                    System.out.println("\nYou Won $" + betPot() * 2 + "\nCurrent Wallet: $" + player.getWallet());
 //                    flag = false;
 //                }
 //            }
@@ -67,13 +67,13 @@ public class Test_BlackJackGame {
 //
 //                        if (blackJackPlayer.getHandValue() > 21) {
 //                            System.out.println("\n~~~~~~~~~~~~~~~~~~~\n\nYour Current Hand: \n\n" + blackJack.formatHand(blackJackPlayer.getPlayerHand()) + "\n\nYour Hand Value: " + blackJackPlayer.getHandValue() + "\n\n~~~~~~~~~~~~~~~~~~~\n\nToo high, you lose!");
-//                            player.setWallet(player.getWallet() - blackJackPlayer.getBetPot());
-//                            System.out.println("\nYou Lost $" + blackJackPlayer.getBetPot() + "\nCurrent Wallet: $" + player.getWallet());
+//                            player.setWallet(player.getWallet() - betPot());
+//                            System.out.println("\nYou Lost $" + betPot() + "\nCurrent Wallet: $" + player.getWallet());
 //                            flag = false;
 //                        } else if (blackJackPlayer.getHandValue() == 21) {
 //                            System.out.println("\n~~~~~~~~~~~~~~~~~~~\n\nYour Current Hand: \n\n" + blackJack.formatHand(blackJackPlayer.getPlayerHand()) + "\n\nYour Hand Value: " + blackJackPlayer.getHandValue() + "\n\n~~~~~~~~~~~~~~~~~~~\n\nYou win!!! YAYAYAYAYAYAYYAYAYAYAYAYYY");
-//                            player.setWallet(player.getWallet() + blackJackPlayer.getBetPot());
-//                            System.out.println("\nYou Won $" + blackJackPlayer.getBetPot() + "\nCurrent Wallet: $" + player.getWallet());
+//                            player.setWallet(player.getWallet() + betPot());
+//                            System.out.println("\nYou Won $" + betPot() + "\nCurrent Wallet: $" + player.getWallet());
 //                            flag = false;
 //                        }
 //                        break;
@@ -107,13 +107,13 @@ public class Test_BlackJackGame {
 //
 //                    if (dealer.getHandValue() > 21) {
 //                        System.out.println("\n~~~~~~~~~~~~~~~~~~~\n\nDealer's Current Hand: \n\n" + blackJack.formatHand(dealer.getPlayerHand()) + "\n\nDealer's Hand Value: " + dealer.getHandValue() + "\n\n~~~~~~~~~~~~~~~~~~~\n\nDealer bust, you win!");
-//                        player.setWallet(player.getWallet() + blackJackPlayer.getBetPot());
-//                        System.out.println("\nYou Won $" + blackJackPlayer.getBetPot() + "\nCurrent Wallet: $" + player.getWallet());
+//                        player.setWallet(player.getWallet() + betPot());
+//                        System.out.println("\nYou Won $" + betPot() + "\nCurrent Wallet: $" + player.getWallet());
 //                        flag = false;
 //                    } else if (dealer.getHandValue() == 21) {
 //                        System.out.println("\n~~~~~~~~~~~~~~~~~~~\n\nDealer's Current Hand: \n\n" + blackJack.formatHand(dealer.getPlayerHand()) + "\n\nDealer's Hand Value: " + dealer.getHandValue() + "\n\n~~~~~~~~~~~~~~~~~~~\n\nBlackjack! Dealer wins!");
-//                        player.setWallet(player.getWallet() - blackJackPlayer.getBetPot());
-//                        System.out.println("\nYou Lost $" + blackJackPlayer.getBetPot() + "\nCurrent Wallet: $" + player.getWallet());
+//                        player.setWallet(player.getWallet() - betPot());
+//                        System.out.println("\nYou Lost $" + betPot() + "\nCurrent Wallet: $" + player.getWallet());
 //                        flag = false;
 //                    } else if (handValue.get(0) < 21 || (handValue.size() > 2 && handValue.get(1) < 21)) {
 //                        blackJack.setNumOfTurns(turnNumber++);
@@ -127,12 +127,12 @@ public class Test_BlackJackGame {
 //
 //                if (blackJackPlayer.getHandValue() > dealer.getHandValue()) {
 //                    System.out.println("\n~~~~~~~~~~~~~~~~~~~\n\nYour Hand Value: " + blackJackPlayer.getHandValue() + "\n\nDealer's Hand Value: " + dealer.getHandValue() + "\n\n~~~~~~~~~~~~~~~~~~~\n\nYou win!");
-//                    player.setWallet(player.getWallet() + blackJackPlayer.getBetPot());
-//                    System.out.println("\nYou Won $" + blackJackPlayer.getBetPot() + "\nCurrent Wallet: $" + player.getWallet());
+//                    player.setWallet(player.getWallet() + betPot());
+//                    System.out.println("\nYou Won $" + betPot() + "\nCurrent Wallet: $" + player.getWallet());
 //                } else if (blackJackPlayer.getHandValue() < dealer.getHandValue()) {
 //                    System.out.println("\n~~~~~~~~~~~~~~~~~~~\n\nYour Hand Value: " + blackJackPlayer.getHandValue() + "\n\nDealer's Hand Value: " + dealer.getHandValue() + "\n\n~~~~~~~~~~~~~~~~~~~\n\nDealer wins! You lose!");
-//                    player.setWallet(player.getWallet() - blackJackPlayer.getBetPot());
-//                    System.out.println("\nYou Lost $" + blackJackPlayer.getBetPot() + "\nCurrent Wallet: $" + player.getWallet());
+//                    player.setWallet(player.getWallet() - betPot());
+//                    System.out.println("\nYou Lost $" + betPot() + "\nCurrent Wallet: $" + player.getWallet());
 //                } else if (blackJackPlayer.getHandValue() == dealer.getHandValue()) {
 //                    System.out.println("\n~~~~~~~~~~~~~~~~~~~\n\nYour Hand Value: " + blackJackPlayer.getHandValue() + "\n\nDealer's Hand Value: " + dealer.getHandValue() + "\n\n~~~~~~~~~~~~~~~~~~~\n\nTie, no one wins");
 //                    System.out.println("\nCurrent Wallet: $" + player.getWallet());
