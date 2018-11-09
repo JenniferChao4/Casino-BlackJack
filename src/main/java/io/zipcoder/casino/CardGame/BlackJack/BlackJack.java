@@ -4,7 +4,7 @@ import io.zipcoder.casino.CardGame.Card;
 import io.zipcoder.casino.CardGame.CardGame;
 import io.zipcoder.casino.CardGame.Deck;
 import io.zipcoder.casino.CardGame.Face;
-import io.zipcoder.casino.Casino_test;
+import io.zipcoder.casino.Casino;
 import io.zipcoder.casino.Interfaces.Gamble;
 import io.zipcoder.casino.Player;
 
@@ -13,20 +13,22 @@ import java.util.Scanner;
 
 public class BlackJack extends CardGame implements Gamble {
 
+    private BlackJackPlayer blackJackPlayer;
+    private Casino casino = Casino.getInstance();
     private ArrayList<BlackJackPlayer> blackJackPlayers = new ArrayList<>();
     private final int minBet = 50;
-    private ArrayList<Card> wastepile = new ArrayList<>();
     private Deck deck = new Deck();
     private boolean justDealt = false;
-    private int numOfTurns = 0;
     private BlackJackPlayer dealer = new BlackJackPlayer(new Dealer());
-    int stands = 0;
+    private BlackJackPlayer thePlayer;
 
+    public BlackJack() {}
 
     public BlackJack(Player player) {
-        BlackJackPlayer blackJackPlayer = new BlackJackPlayer(player);
+        this.blackJackPlayer = new BlackJackPlayer(player);
         blackJackPlayers.add(dealer);
         this.blackJackPlayers.add(blackJackPlayer);
+        this.thePlayer = blackJackPlayers.get(1);
         deck.shuffle();
     }
 
@@ -36,13 +38,7 @@ public class BlackJack extends CardGame implements Gamble {
         player.addToHand(card);
         countPlayerHand(player);
 
-
-        if (player == blackJackPlayers.get(1)) {
-            System.out.println("\n~~~~~~~~~~~~~~~~~~~\n\nYou Hit: " + card.toString());
-        } else if (player == this.dealer) {
-            System.out.println("\n~~~~~~~~~~~~~~~~~~~\n\nDealer Hit: " + card.toString());
-        }
-
+        Console_BlackJack.hitCard(player, card);
     }
 
     public void split(BlackJackPlayer player) {
@@ -61,6 +57,7 @@ public class BlackJack extends CardGame implements Gamble {
     public void doubleDown(BlackJackPlayer blackJackPlayer) {
         if (getJustDealt()) {
             blackJackPlayer.addToBetPot(blackJackPlayer.getInitialBet());
+            Console_BlackJack.doubleDownBet(blackJackPlayer);
         }
         setJustDealt(false);
     }
@@ -95,33 +92,32 @@ public class BlackJack extends CardGame implements Gamble {
         return aceIsEleven;
     }
 
+    // REFACTOR THIS!!!!
     public ArrayList<Integer> countPlayerHand(BlackJackPlayer player) {
         ArrayList<Integer> handSum = new ArrayList<>();
-        Integer aceIsOne;
-        Integer aceIsEleven;
-        Integer noAce;
 
         if (player.hasAce() && calculate_Standard(player) > 21) {
-            player.setHandValue(calculate_AceIsOne(player));
-            aceIsOne = player.getHandValue();
-            handSum.add(aceIsOne);
+            handSum.add(setAceToOne(player));
 
         } else if (player.hasAce() && calculate_Standard(player) < 21) {
-            player.setHandValue(calculate_AceIsOne(player));
-            aceIsOne = player.getHandValue();
-            handSum.add(aceIsOne);
-
-            player.setHandValue(calculate_Standard(player));
-            aceIsEleven = player.getHandValue();
-            handSum.add(aceIsEleven);
+            handSum.add(setAceToOne(player));
+            handSum.add(setAceToEleven(player));
 
         } else {
-            player.setHandValue(calculate_Standard(player));
-            noAce = player.getHandValue();
-            handSum.add(noAce);
+            handSum.add(setAceToEleven(player));
         }
 
         return handSum;
+    }
+
+    public int setAceToOne(BlackJackPlayer blackJackPlayer) {
+        blackJackPlayer.setHandValue(calculate_AceIsOne(blackJackPlayer));
+        return blackJackPlayer.getHandValue();
+    }
+
+    public int setAceToEleven(BlackJackPlayer blackJackPlayer) {
+        blackJackPlayer.setHandValue(calculate_Standard(blackJackPlayer));
+        return blackJackPlayer.getHandValue();
     }
 
     public void deal() {
@@ -150,18 +146,10 @@ public class BlackJack extends CardGame implements Gamble {
     }
 
     public void start() {
-        BlackJackGameplay.start(blackJackPlayers.get(1).getPlayer());
     }
 
     public void end() {
-
-    }
-
-    public void takeATurn() {
-    }
-
-    // add to game interface?
-    public void endTurn() {
+        casino.chooseGame();
     }
 
     public void addPlayer(Player player) {
@@ -184,15 +172,11 @@ public class BlackJack extends CardGame implements Gamble {
 
     public int betAmount(int amount, BlackJackPlayer blackJackPlayer) {
         blackJackPlayer.addToBetPot(amount);
-        return betAmount(amount, blackJackPlayer.getPlayer());
+        return amount;
     }
 
     public int betAmount(int amount, Player player) {
         return amount;
-    }
-
-    public void distributePot(int amount, Player player) {
-
     }
 
     public boolean getJustDealt() {
@@ -203,51 +187,7 @@ public class BlackJack extends CardGame implements Gamble {
         this.justDealt = justDealt;
     }
 
-    public int getStands() {
-        return stands;
+    public BlackJackPlayer getThePlayer() {
+        return thePlayer;
     }
-
-    public void setStands(int stands) {
-        this.stands = stands;
-    }
-
-    public int getNumOfTurns() {
-        return numOfTurns;
-    }
-
-    public void setNumOfTurns(int numOfTurns) {
-        this.numOfTurns = numOfTurns;
-    }
-
-    public String formatHand(ArrayList<Card> array) {
-        String stringHand = "";
-
-        String uglyArray = array.toString();
-
-        for (int i = 0; i < uglyArray.length(); i++) {
-            if (uglyArray.charAt(i) != ' ' && uglyArray.charAt(i) != '[' && uglyArray.charAt(i) != ']' && uglyArray.charAt(i) != ',') {
-                stringHand += uglyArray.charAt(i);
-            } else if (uglyArray.charAt(i) == ' ') {
-                stringHand += " || ";
-            }
-        }
-        return stringHand;
-    }
-
-    public String formatHandValue(ArrayList<Integer> array) {
-        String stringHandValue = "";
-
-        String uglyArray = array.toString();
-
-        for (int i = 0; i < uglyArray.length(); i++) {
-            if (uglyArray.charAt(i) != ' ' && uglyArray.charAt(i) != '[' && uglyArray.charAt(i) != ']' && uglyArray.charAt(i) != ',') {
-                stringHandValue += uglyArray.charAt(i);
-            } else if (uglyArray.charAt(i) == ' ') {
-                stringHandValue += " or ";
-            }
-        }
-
-        return stringHandValue;
-    }
-
 }

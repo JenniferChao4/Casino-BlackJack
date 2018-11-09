@@ -4,6 +4,7 @@ import io.zipcoder.casino.CardGame.Card;
 
 import java.util.Stack;
 
+import static io.zipcoder.casino.CardGame.Solitaire.Solitaire.lastStack;
 import static io.zipcoder.casino.CardGame.Solitaire.Solitaire.tempStack;
 
 public class Tableau {
@@ -23,27 +24,21 @@ public class Tableau {
         stack.push(c);
     }
 
-    //need to preface with a find stack method. maybe at higher level that feeds into this.stack
-    // - so that player doesn't have to select the stack, he can just type in card to place onto.
-
-    //c = the top card of the subStack you want to pull - ex. 6D, 5C, 4H, 3S, 2D, AS; if pulling 4H and down, c = 4H.
-    public Stack<Card> pull(Card c){
-        if(this.stack.contains(c)){
-            while(!stack.peek().equals(c))  tempStack.push(stack.pop());
-            tempStack.push(stack.pop());
-            }
-        unCover();
-        return tempStack;
+    //c = the top card of the subStack you want to pull - ex. 6D, 5C, 4H, 3S, 2D, AS; if you want to pull 4H and down, c = 4H.
+    public void pull(Card c){
+        while(!stack.peek().equals(c))  tempStack.push(stack.pop());
+        tempStack.push(stack.pop());
         }
 
     //does not need parameter. with a stack representing each column, will simply call 'stack'.place() to drop the tempStack on top of it.
     public void place(){
         if (this.canReceive(tempStack.peek())){
             while(tempStack.iterator().hasNext()){
-                unCover();
                 add(tempStack.pop());
+                if (lastStack.size() > 0) unCover(lastStack);
             }
-        }
+            if (lastStack.size() > 0) unCover(lastStack);
+        } else { lastStack.push(tempStack.pop()); }
     }
 
     //checks whether 'top' card of stack is opposite color and 1 above passed card
@@ -61,7 +56,7 @@ public class Tableau {
         } return false;
     }
 
-    private void unCover(){
-        if (size() > 0 && this.stack.peek().isCovered()) this.stack.peek().setCovered(false);
+    private void unCover(Stack<Card> lastStack){
+        if (size() > 0 && lastStack.peek().isCovered()) lastStack.peek().setCovered(false);
     }
 }

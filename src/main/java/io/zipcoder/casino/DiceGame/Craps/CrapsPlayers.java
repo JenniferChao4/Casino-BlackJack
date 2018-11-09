@@ -15,6 +15,7 @@ public class CrapsPlayers {
             this.initialBet = 0;
             this.rollValue = 0;
             this.betPot = 0;
+            this.wallet = 500;
         }
 
         public Player getPlayer() {

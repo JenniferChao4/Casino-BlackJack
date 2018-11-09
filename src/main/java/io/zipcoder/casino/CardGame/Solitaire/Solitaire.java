@@ -3,22 +3,25 @@ package io.zipcoder.casino.CardGame.Solitaire;
 import io.zipcoder.casino.CardGame.Card;
 import io.zipcoder.casino.CardGame.CardGame;
 import io.zipcoder.casino.CardGame.Deck;
+import io.zipcoder.casino.Casino;
 import io.zipcoder.casino.Console;
 import io.zipcoder.casino.Player;
 
+import java.util.EmptyStackException;
 import java.util.Scanner;
 import java.util.Stack;
 
 import static io.zipcoder.casino.CardGame.Card.toCard;
-import static io.zipcoder.casino.CardGame.Solitaire.Foundation.allFoundsFull;
-import static io.zipcoder.casino.CardGame.Solitaire.Foundation.whichSuit;
+import static io.zipcoder.casino.CardGame.Solitaire.Foundation.*;
 
 public class Solitaire extends CardGame {
 
-    public static void main(String[] args){
-        Solitaire s = new Solitaire(new Player("Bill"));
-        s.start();
-    }
+//    public static void main(String[] args){
+//        Solitaire s = new Solitaire(new Player("Bill"));
+//        s.start();
+//    }
+    Casino casino = Casino.getInstance();
+    Console console = new Console(System.in, System.out);
 
     Scanner in = new Scanner(System.in);
     //clean up.
@@ -29,6 +32,7 @@ public class Solitaire extends CardGame {
     public Stack<Card> wastePile;
     public Tableau[] arrayTabs;
     public static Stack<Card> tempStack = new Stack<>();
+    public static Stack<Card> lastStack = null;
 
     public Solitaire(Player player) {
         this.player = player;
@@ -41,13 +45,36 @@ public class Solitaire extends CardGame {
         tab6 = new Tableau();
         tab7 = new Tableau();
         arrayTabs = new Tableau[]{tab1, tab2, tab3, tab4, tab5, tab6, tab7};
-        start();
     }
 
     public static Deck solitaireDeck = new Deck();
 
-    public void deal() {
+
+    public void start(){
+        System.out.println("Welcome");
+        help();
+        resetDeck();
+        wastePile.removeAllElements();
+        tempStack.removeAllElements();
+        clubStack.removeAllElements();
+        diamondStack.removeAllElements();
+        spadeStack.removeAllElements();
+        heartStack.removeAllElements();
+        shuffle();
+        deal();
+        print();
+        takeATurn();
+    }
+
+    public void help(){
+        console.println("\n\nInstructions:\n%s\n%s\n%s\n%s\n%s\n%s\n\n","To draw a card, enter \'DRAW\'","To pick up card from draw pile, enter \'P\'","To place card on column, enter column number. If card goes into foundation, enter \'8\'","To pull card down, type in card code (i.e. \'7H\' for Seven of Hearts","To quit, enter \'QUIT\'", "If you need help, just enter 'HELP'");
+    }
+
+    public void shuffle(){
         solitaireDeck.shuffle();
+    }
+
+    public void deal() {
         for (int i = 0; i < arrayTabs.length; i++) {
             for (int j = 0; j < arrayTabs.length; j++) {
                 if (j >= i) arrayTabs[j].add(draw());
@@ -63,6 +90,7 @@ public class Solitaire extends CardGame {
 
     public Stack<Card> pickUp(){
         tempStack.push(wastePile.pop());
+        lastStack = wastePile;
         return tempStack;
     }
 
@@ -92,80 +120,78 @@ public class Solitaire extends CardGame {
             case '8':
                 whichSuit(tempStack);
                 break;
-            case '9':
-                whichSuit(tempStack);
-                break;
-            case '0':
-                whichSuit(tempStack);
-                break;
-            case '-':
-                whichSuit(tempStack);
-                break;
-            case 'E': //develop way to replace original stack on pile. don't change coverage until placed. same with pulled from stack.
-                break;
             default:
-                System.out.println("Not a valid entry. Try again or press \'E\'");
+                System.out.println("Not a valid entry. Try again");
                 dropToTab(in.next().charAt(0));
         }
     }
 
-    public Stack<Card> pull(String cardCode){
-        char f = cardCode.charAt(0);
-        char s = cardCode.charAt(1);
+    public void pull(String cardCode){
+        char f = cardCode.toUpperCase().charAt(0);
+        char s = cardCode.toUpperCase().charAt(1);
         Card c = toCard(f,s);
-        return findTab(c).pull(c);
+        findTab(c).pull(c);
     }
 
     public Tableau findTab(Card c){
         for (Tableau tab : arrayTabs)
-            if (tab.stack.contains(c))
+            if (tab.stack.contains(c)) {
+                lastStack = tab.stack;
                 return tab;
+            }
         return null;
     }
 
-    public void start(){
-        System.out.println("Welcome");
-        resetDeck();
-        wastePile.removeAllElements();
-        deal();
-        print();
-        takeATurn();
+    public void peekWaste(){
+        if(wastePile.size()>0) System.out.println("\n\nDraw pile: " + wastePile.peek().toString2());
     }
 
-    public void end() {
-        System.out.println("Congratulations!");
-        System.out.println("Enter \'N\' to play again or press \'Q\' to quit");
-        String command = in.next().toUpperCase();
-        while (!command.equals("Q") || !command.equals("N")){
-            if (command.equals("Q")) end();
-            else if (command.equals("N")) start();
-            else System.out.println("Invalid. Enter \'N\' to play again or press \'Q\' to quit");
-        }
-    }
-
-    public String getInput(){
-        return in.next();
-    }
-
+    //you've got a temp stack. so when you pull a card, show it. if it doesn't go, put it back.
+    //fix empty stack exceptions
+    //draw shouldn't reprint every time. only print top of wastePile
+    //build console class for solitaire printouts
     public void takeATurn() {
-        Console.println("Let's play");
-        while (!getInput().equals("QUIT") || !allFoundsFull()) {
-            if (Console.getInputString("Enter draw to draw a card").equals("DRAW")) {
-                drawCard();
-                print();
-                continue;
-            } else if (Console.getInputString("Enter draw to draw a card").equals("P")) {
-                pickUp();
-                dropToTab(getInput().charAt(0));
-                print();
-            } else if (Console.getInputString("Enter draw to draw a card").length() == 2) {
-                pull(String.valueOf(getInput()));
-                dropToTab(getInput().charAt(0));
-                print();
+            console.println("\n\nReady? Let's Play");
+            while (!allFoundsFull() || !gameOver()) {
+                String command = console.getInputString("\nWhat now?");
+                switch (String.valueOf(command)) {
+                    case "DRAW":
+                        drawCard();
+                        print();
+                        //console.println("\nDraw pile: " + wastePile.peek().toString2());
+                        break;
+                    case "P":
+                        //try, catch, continue
+                        try {
+                            pickUp();
+                            console.println("\nYou just picked up " + tempStack.peek().toString2());
+                                dropToTab(console.getDropTab().charAt(0));
+                            print();
+                            break;
+                        } catch (EmptyStackException e) {
+                            console.println("\nCan't pull from an empty draw pile");
+                            break;
+                        }
+                    case "HELP":
+                        help();
+                        break;
+                    case "QUIT":
+                        gameOver();
+//                    case "FOO":
+//                        cheatFoundations();
+                    default:
+                        try {
+                            pull(String.valueOf(command));
+                            console.println("\nYou just pulled " + tempStack.peek().toString2());
+                            dropToTab(console.getDropTab().charAt(0));
+                        } catch (NullPointerException e) {
+                            console.println("Card does not exist. Try again :)\n");
+                            break;
+                        }
+                        print();
+                        break;
+                }
             }
-        }
-
-        if (allFoundsFull()) end();
     }
 
     public void addPlayer(Player player) {
@@ -176,12 +202,6 @@ public class Solitaire extends CardGame {
 
     }
 
-    public void moveable() {
-    }
-
-    public void receivable() {
-    }
-
     public Card draw() {
         return solitaireDeck.draw();
     }
@@ -189,15 +209,57 @@ public class Solitaire extends CardGame {
     public void resetDeck(){
         solitaireDeck = new Deck();
     }
+    Foundation found = new Foundation();
 
     public void print(){
-        int i = 0;
-        for (Tableau tab : arrayTabs) {
-            System.out.println("tab " + i); i++;
-            tab.stack.forEach(e -> System.out.println(e + " " + e.isCovered()));
+        System.out.println("CLUBS\t\tDIAMONDS\t\tHEARTS\t\tSPADES");
+        System.out.println("------\t\t--------\t\t------\t\t------");
+
+        if (Foundation.clubStack.size() == 0){
+            System.out.print("  --  \t\t");
+        } else {
+            System.out.print("  " + Foundation.clubStack.peek().toString2() + "  \t\t");
         }
-        if (wastePile.size() > 0) System.out.println("Top of Pile " + wastePile.peek());
+
+        if (Foundation.diamondStack.size() == 0){
+            System.out.print("   --  \t\t\t");
+        } else {
+            System.out.print("  " + Foundation.diamondStack.peek().toString2() + "  \t\t\t");
+        }
+
+        if (Foundation.heartStack.size() == 0){
+            System.out.print("  --  \t\t");
+        } else {
+            System.out.print("  " + Foundation.heartStack.peek().toString2() + "  \t\t");
+        }
+        if (Foundation.spadeStack.size() == 0){
+            System.out.println("  --  \t\t");
+        } else {
+            System.out.print("  " + Foundation.spadeStack.peek().toString2() + "  \t\t\n");
+        }
+
+        int i = 1;
+        for (Tableau tab : arrayTabs) {
+            System.out.println("\nCOLUMN " + i); i++;
+            tab.stack.forEach(e -> System.out.print(e.toString2() + " " + "\t"));
+        }
+        peekWaste();
     }
 
+    public Boolean gameOver(){
+        casino.chooseGame();
+        //if(console.getInputString("Are you sure you want to quit?\nEnter Y to quit").equals("Y")) return true;
+        return false;
+    }
 
+    public void end() {
+        System.out.println("Congratulations!");
+        System.out.println("Enter \'N\' to play again or press \'Q\' to quit");
+        String command = in.next().toUpperCase();
+        while (!command.equals("Q") || !command.equals("N")){
+            if (command.equals("Q"));
+            else if (command.equals("N")) start();
+            else System.out.println("Invalid. Enter \'N\' to play again or press \'Q\' to quit");
+        }
+    }
 }

@@ -7,10 +7,10 @@ import static org.junit.Assert.*;
 public class SlotsTest {
 
     String[] reels = new String[5];
-    String[] names = {"Christian","Demetrius", "Jen",
-            "Kate", "Nate", "WIN", "Christian","Demetrius",
-            "Jen",
-            "Kate", "Nate" };
+//    String[] names = {"Christian","Demetrius", "Jen",
+//            "Kate", "Nate", "WIN", "Christian","Demetrius",
+//            "Jen",
+//            "Kate", "Nate" };
 
 
     @Test

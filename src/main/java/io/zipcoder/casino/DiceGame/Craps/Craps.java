@@ -1,6 +1,8 @@
 package io.zipcoder.casino.DiceGame.Craps;
 
 import io.zipcoder.casino.CardGame.Solitaire.Tableau;
+import io.zipcoder.casino.Casino;
+import io.zipcoder.casino.Console;
 import io.zipcoder.casino.DiceGame.Dice;
 import io.zipcoder.casino.DiceGame.DiceGame;
 import io.zipcoder.casino.Interfaces.Gamble;
@@ -14,15 +16,15 @@ import java.util.Scanner;
 public class Craps extends DiceGame implements Gamble {
     Scanner scanner;
 
-
-    int rollNumber = 0;
+    private Casino casino = Casino.getInstance();
+    private int rollNumber = 0;
     private CrapsPlayers crapsPlayer;
     private int minBet;
     private Player player;
     private Dice dice;
     private int pointer;
-
-
+    private int result;
+    private int totalWin;
 
 
     public Craps(Player player) {
@@ -30,35 +32,37 @@ public class Craps extends DiceGame implements Gamble {
         this.crapsPlayer = new CrapsPlayers(player);
         this.minBet = 10;
         this.dice = new Dice();
+        //this.result = 0;
         scanner = new Scanner(System.in);
     }
 
-    public void gamePlay(){
+    public void gamePlay() {
+        crapsPlayer.setWallet(crapsPlayer.getWallet());
         System.out.println("What would you like to bet? Min bet is: $" + minBet);
         int amount = scanner.nextInt();
-        //add a try catch
-        if (amount<minBet){
-            System.out.println("Sorry but the minimum bet is $"+minBet);
+        if (amount < minBet) {
+            System.out.println("Sorry but the minimum bet is $" + minBet);
             gamePlay();
         }
         crapsPlayer.setInitialBet(amount);
         System.out.println("Are you ready to roll?  yes or no");
         String response = scanner.next();
-        if(response.equalsIgnoreCase("yes")) {
-        } else if(response.equalsIgnoreCase("no")) {
-            gamePlay();
-        } else{
+        if (response.equalsIgnoreCase("yes")) {
+            firstRoll();
+            remainingRolls();
+        } else if (response.equalsIgnoreCase("no")) {
+            // gamePlay();
+            end();
+        } else {
             System.out.println("no valid");
         }
-        firstRoll();
-        remainingRolls();
     }
 
     public int rollDice() {
         int sum = rollDice(2);
         System.out.println("Total = " + sum);
         System.out.println("______________");
-        rollNumber++;
+        setResult(sum);
         return sum;
     }
 
@@ -74,64 +78,67 @@ public class Craps extends DiceGame implements Gamble {
     }
 
     public void remainingRolls() {
+        System.out.println("The pointer is: " + pointer);
         System.out.println("Are you ready to roll?  yes or no");
         String response = scanner.next();
-        if(response.equalsIgnoreCase("yes")) {
-        } else if(response.equalsIgnoreCase("no")) {
+        if (response.equalsIgnoreCase("yes")) {
+            int result = rollDice();
+            if (result == pointer) {
+                win(crapsPlayer);
+            } else if (result == 7) {
+                lose(crapsPlayer);
+            } else {
+                remainingRolls();
+            }
+        } else if (response.equalsIgnoreCase("no")) {
             System.out.println("would you like to exit?");
             String response2 = scanner.next();
-            if(response2.equalsIgnoreCase("yes")){
+            if (response2.equalsIgnoreCase("yes")) {
                 exitTable(crapsPlayer);
-            } else if(response2.equalsIgnoreCase("no")){
+                casino.chooseGame();
+            } else if (response2.equalsIgnoreCase("no")) {
                 gamePlay();
             }
-        } else{
+        } else {
             System.out.println("not valid");
         }
-        int result = rollDice();
-        if (result == pointer) {
-            win(crapsPlayer);
-        } else if (result == 7) {
-            lose(crapsPlayer);
-        } else
-            remainingRolls();
+    }
+
+    public int getRollResult()
+    {
+        return this.result;
     }
 
     public int betAmount(int amount, Player player) {
         return amount;
     }
 
-    public int betAmount(int amount, CrapsPlayers crapsPlayers) {
-        crapsPlayers.addToBetPot(amount);
-        return betAmount(amount, crapsPlayers.getPlayer());
-    }
 
-    public void win(CrapsPlayers crapsPlayers){
-       crapsPlayers.setWallet(crapsPlayers.getWallet() + crapsPlayers.getInitialBet() * 2);
+    public void win(CrapsPlayers crapsPlayers) {
         System.out.println("Congrats! You won: $" + crapsPlayers.getInitialBet());
+        totalWin = crapsPlayers.getInitialBet();
+        crapsPlayers.setWallet(crapsPlayers.getWallet() + totalWin);
+        displayWallet();
         playAgain();
     }
 
     public void lose(CrapsPlayers crapsPlayers) {
         System.out.println("I'm so sorry, you lose!");
-      playAgain();
+        crapsPlayers.setWallet(crapsPlayers.getWallet() - crapsPlayers.getInitialBet());
+        displayWallet();
+        playAgain();
     }
 
-    public void playAgain(){
+    public void playAgain() {
         System.out.println("Would you like to play again?");
         String response = scanner.next();
-        if(response.equalsIgnoreCase("yes")) {
+        if (response.equalsIgnoreCase("yes")) {
             start();
-        } else if(response.equalsIgnoreCase("no")) {
+        } else if (response.equalsIgnoreCase("no")) {
             end();
         } else {
             System.out.println("Sorry I didn't quite get that, try again!");
         }
-        end();
-    }
-
-    public void distributePot(int amount, Player player) {
-
     }
 
     public void start() {
@@ -141,20 +148,17 @@ public class Craps extends DiceGame implements Gamble {
     public void end() {
         System.out.println("Would you like to leave the table?");
         String response = scanner.next();
-        if(response.equalsIgnoreCase("yes")) {
+        if (response.equalsIgnoreCase("yes")) {
             exitTable(crapsPlayer);
-        } else if(response.equalsIgnoreCase("no")) {
+            casino.chooseGame();
+        } else if (response.equalsIgnoreCase("no")) {
             start();
         }
 
     }
 
-    public void exitTable(CrapsPlayers crapsPlayer){
+    public void exitTable(CrapsPlayers crapsPlayer) {
         removePlayer(player);
-    }
-
-    public void takeATurn() {
-
     }
 
     public int getPointer() {
@@ -165,16 +169,26 @@ public class Craps extends DiceGame implements Gamble {
         this.pointer = pointer;
     }
 
+    public void setResult(int result) {
+        this.result = result;
+    }
+
     public void addPlayer(Player player) {
         CrapsPlayers crappyPlayer = new CrapsPlayers(player);
         this.crapsPlayer = crappyPlayer;
     }
 
     public void removePlayer(Player player) {
-            if (crapsPlayer.getPlayer() == player) {
-                this.crapsPlayer = null;
-            }
-
+        if (crapsPlayer.getPlayer() == player) {
+            this.crapsPlayer = null;
         }
-
     }
+
+    public CrapsPlayers getCrapsPlayer() {
+        return crapsPlayer;
+    }
+
+    public void displayWallet() {
+        System.out.println("You have: $" + crapsPlayer.getWallet());
+    }
+}

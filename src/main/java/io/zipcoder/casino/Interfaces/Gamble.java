@@ -4,6 +4,4 @@ import io.zipcoder.casino.Player;
 
 public interface Gamble {
     int betAmount(int amount, Player player);
-
-    void distributePot(int amount, Player player);
 }
