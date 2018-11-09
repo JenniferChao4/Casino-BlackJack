@@ -102,15 +102,15 @@ public class Craps extends DiceGame implements Gamble {
             remainingRolls();
     }
 
+    public int getRollResult()
+    {
+        return this.result;
+    }
 
     public int betAmount(int amount, Player player) {
         return amount;
     }
 
-    public int betAmount(int amount, CrapsPlayers crapsPlayers) {
-        crapsPlayers.addToBetPot(amount);
-        return betAmount(amount, crapsPlayers.getPlayer());
-    }
 
     public void win(CrapsPlayers crapsPlayers) {
         System.out.println("Congrats! You won: $" + crapsPlayers.getInitialBet());
