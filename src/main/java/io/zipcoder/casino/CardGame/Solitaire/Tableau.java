@@ -1,5 +1,6 @@
 package io.zipcoder.casino.CardGame.Solitaire;
 
+import com.sun.org.apache.bcel.internal.generic.IF_ACMPEQ;
 import io.zipcoder.casino.CardGame.Card;
 
 import java.util.Stack;
@@ -34,10 +35,9 @@ public class Tableau {
     public void place(){
         if (this.canReceive(tempStack.peek())){
             while(tempStack.iterator().hasNext()){
-                unCover(lastStack);
                 add(tempStack.pop());
             }
-            unCover(lastStack);
+            if (lastStack.size() > 0) unCover(lastStack);
         } else { lastStack.push(tempStack.pop()); }
     }
 
