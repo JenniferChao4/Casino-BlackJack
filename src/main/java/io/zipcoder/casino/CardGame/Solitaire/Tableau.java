@@ -56,7 +56,7 @@ public class Tableau {
         } return false;
     }
 
-    private void unCover(Stack<Card> lastStack){
+    public void unCover(Stack<Card> lastStack){
         if (size() > 0 && lastStack.peek().isCovered()) lastStack.peek().setCovered(false);
     }
 }
