@@ -225,12 +225,12 @@ public class Solitaire extends CardGame {
         if (Foundation.heartStack.size() == 0){
             System.out.print("  --  \t\t");
         } else {
-            System.out.print("  " + Foundation.heartStack.peek().toString2() + "  \t");
+            System.out.print("  " + Foundation.heartStack.peek().toString2() + "  \t\t");
         }
         if (Foundation.spadeStack.size() == 0){
             System.out.println("  --  \t\t");
         } else {
-            System.out.print("  " + Foundation.spadeStack.peek().toString2() + "  \t\n");
+            System.out.print("  " + Foundation.spadeStack.peek().toString2() + "  \t\t\n");
         }
 
         int i = 1;
