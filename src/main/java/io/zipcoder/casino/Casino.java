@@ -48,10 +48,6 @@ package io.zipcoder.casino;
 //}
 
 
-
-
-
-
 import io.zipcoder.casino.CardGame.BlackJack.BlackJack;
 import io.zipcoder.casino.CardGame.BlackJack.BlackJackGameplay;
 import io.zipcoder.casino.CardGame.BlackJack.Console_BlackJack;
@@ -62,11 +58,12 @@ public final class Casino {
 
     private final static Casino instance = new Casino();
 
-    private Player player;
+    private static Player player = new Player();
 
     private String casinoName;
 
-    public Casino(){}
+    public Casino() {
+    }
 
     public Casino(Player player) {
         this.casinoName = "Thunder Theta";
@@ -74,7 +71,8 @@ public final class Casino {
     }
 
     public void chooseGame() {
-        String userInput = Console.getStringInput("\nWhat game would you like to play?\n\n<< BlackJack - Solitaire - Craps - Leave >>");
+        Player player = Casino.getPlayer();
+        String userInput = Console.getStringInput("\nWhat game would you like to play?\n\n<< BlackJack - Solitaire - Craps - Slots - Leave >>");
         String input = userInput.toUpperCase();
 
         boolean flag = true;
@@ -90,12 +88,17 @@ public final class Casino {
                     BlackJack blackJack = new BlackJack(player);
                     BlackJackGameplay blackJackGameplay = new BlackJackGameplay(blackJack);
                     Console_BlackJack.blackJackWelcome();
-                    blackJackGameplay.start(player);
+                    blackJackGameplay.start();
                     flag = false;
                     break;
                 case "CRAPS":
                     Craps craps = new Craps(player);
                     craps.gamePlay();
+                    flag = false;
+                    break;
+                case "SLOTS":
+                    Slots slot = new Slots();
+                    slot.FillReels(5);
                     flag = false;
                     break;
                 case "LEAVE":
@@ -110,19 +113,21 @@ public final class Casino {
         }
     }
 
-    public void setPlayer(Player player) {
-        this.player = player;
-    }
+    // public void setPlayer(Player player) {
+//        this.player = player;
+//    }
 
-    public Player getPlayer() {
-        return this.player;
+    public static Player getPlayer() {
+        return player;
     }
 
     public String getCasinoName() {
         return this.casinoName;
     }
 
-    public static Casino getInstance() {return instance; }
+    public static Casino getInstance() {
+        return instance;
+    }
 
 }
 

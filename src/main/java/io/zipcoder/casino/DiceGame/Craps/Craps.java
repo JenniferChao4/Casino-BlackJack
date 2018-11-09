@@ -81,11 +81,18 @@ public class Craps extends DiceGame implements Gamble {
         System.out.println("Are you ready to roll?  yes or no");
         String response = scanner.next();
         if (response.equalsIgnoreCase("yes")) {
+            int result = rollDice();
+            if (result == pointer) {
+                win(crapsPlayer);
+            } else if (result == 7) {
+                lose(crapsPlayer);
+            } else
+                remainingRolls();
         } else if (response.equalsIgnoreCase("no")) {
             System.out.println("would you like to exit?");
             String response2 = scanner.next();
             if (response2.equalsIgnoreCase("yes")) {
-                exitTable(crapsPlayer);
+                // exitTable(crapsPlayer);
                 casino.chooseGame();
             } else if (response2.equalsIgnoreCase("no")) {
                 gamePlay();
@@ -93,13 +100,13 @@ public class Craps extends DiceGame implements Gamble {
         } else {
             System.out.println("not valid");
         }
-        int result = rollDice();
-        if (result == pointer) {
-            win(crapsPlayer);
-        } else if (result == 7) {
-            lose(crapsPlayer);
-        } else
-            remainingRolls();
+//        int result = rollDice();
+//        if (result == pointer) {
+//            win(crapsPlayer);
+//        } else if (result == 7) {
+//            lose(crapsPlayer);
+//        } else
+//            remainingRolls();
     }
 
 
@@ -148,7 +155,7 @@ public class Craps extends DiceGame implements Gamble {
         System.out.println("Would you like to leave the table?");
         String response = scanner.next();
         if (response.equalsIgnoreCase("yes")) {
-            exitTable(crapsPlayer);
+            // exitTable(crapsPlayer);
             casino.chooseGame();
         } else if (response.equalsIgnoreCase("no")) {
             start();
