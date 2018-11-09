@@ -84,6 +84,13 @@ public class Solitaire extends CardGame {
         for(Tableau tab : arrayTabs) tab.stack.peek().setCovered(false);
     }
 
+    public void refillDeck(){
+        if (solitaireDeck.deckOfCards.size()<1){
+            while(wastePile.iterator().hasNext())
+                solitaireDeck.deckOfCards.push(wastePile.pop());
+        }
+    }
+
     public void drawCard(){
         wastePile.push(solitaireDeck.draw());
     }
@@ -146,6 +153,10 @@ public class Solitaire extends CardGame {
         if(wastePile.size()>0) System.out.println("\n\nDraw pile: " + wastePile.peek().toString2());
     }
 
+    public static void unCover(Stack<Card> lastStack){
+        if (lastStack.size() > 0 && lastStack.peek().isCovered()) lastStack.peek().setCovered(false);
+    }
+
     //you've got a temp stack. so when you pull a card, show it. if it doesn't go, put it back.
     //fix empty stack exceptions
     //draw shouldn't reprint every time. only print top of wastePile
@@ -191,6 +202,7 @@ public class Solitaire extends CardGame {
                         print();
                         break;
                 }
+                if (solitaireDeck.deckOfCards.size()<1) refillDeck();
             }
     }
 
