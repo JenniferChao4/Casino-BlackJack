@@ -4,6 +4,7 @@ import io.zipcoder.casino.CardGame.Card;
 import io.zipcoder.casino.CardGame.Deck;
 import io.zipcoder.casino.CardGame.Face;
 import io.zipcoder.casino.CardGame.Suit;
+import io.zipcoder.casino.Player;
 import org.junit.Assert;
 import org.junit.Test;
 
@@ -201,6 +202,14 @@ public class FoundationTest {
 
         //THEN
         Assert.assertEquals(expected, actual);
+    }
+
+    @Test
+    public void testCheatFoundations(){
+        Solitaire s = new Solitaire(new Player("234"));
+        s.resetDeck();
+        Foundation.cheatFoundations();
+
     }
 
 }

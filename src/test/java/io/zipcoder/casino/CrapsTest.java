@@ -51,7 +51,7 @@ public class CrapsTest {
         // making sure that in first roll if 7 player wins
         game1.firstRoll();
         game1.setResult(7);
-        
+
         int expected = 510;
         int actual = Crappy.getWallet();
         Assert.assertEquals(expected, actual);
