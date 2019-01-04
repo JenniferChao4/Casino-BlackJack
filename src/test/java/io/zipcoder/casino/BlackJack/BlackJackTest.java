@@ -1,10 +1,9 @@
-package io.zipcoder.casino.CardGame.BlackJack;
+package io.zipcoder.casino.BlackJack;
 
 import io.zipcoder.casino.CardGame.Card;
 import io.zipcoder.casino.CardGame.Deck;
 import io.zipcoder.casino.CardGame.Face;
 import io.zipcoder.casino.CardGame.Suit;
-import io.zipcoder.casino.Casino;
 import io.zipcoder.casino.Player;
 import org.junit.Assert;
 import org.junit.Test;

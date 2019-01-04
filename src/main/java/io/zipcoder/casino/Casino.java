@@ -8,9 +8,9 @@ package io.zipcoder.casino;
 
 // Jackpot option? Low chance but player wins $1mil
 //
-//import io.zipcoder.casino.CardGame.BlackJack.BlackJack;
+//import io.zipcoder.casino.BlackJack.BlackJack;
 //import io.zipcoder.casino.DiceGame.Craps.Craps;
-//import io.zipcoder.casino.CardGame.Solitaire.Solitaire;
+//import io.zipcoder.casino.CardGame.CardGame.Solitaire.Solitaire;
 //import io.zipcoder.casino.Interfaces.Game;
 //
 //public class Casino {
@@ -48,10 +48,9 @@ package io.zipcoder.casino;
 //}
 
 
-import io.zipcoder.casino.CardGame.BlackJack.BlackJack;
-import io.zipcoder.casino.CardGame.BlackJack.BlackJackGameplay;
-import io.zipcoder.casino.CardGame.BlackJack.Console_BlackJack;
-import io.zipcoder.casino.CardGame.Solitaire.Solitaire;
+import io.zipcoder.casino.BlackJack.BlackJack;
+import io.zipcoder.casino.BlackJack.BlackJackGameplay;
+import io.zipcoder.casino.CardGame.CardGame.Solitaire.Solitaire;
 import io.zipcoder.casino.DiceGame.Craps.Craps;
 
 public final class Casino {
@@ -87,7 +86,7 @@ public final class Casino {
                 case "BLACKJACK":
                     BlackJack blackJack = new BlackJack(player);
                     BlackJackGameplay blackJackGameplay = new BlackJackGameplay(blackJack);
-                    Console_BlackJack.blackJackWelcome();
+                    Console.blackJackWelcome();
                     blackJackGameplay.start();
                     flag = false;
                     break;
@@ -102,11 +101,11 @@ public final class Casino {
                     flag = false;
                     break;
                 case "LEAVE":
-                    Console_BlackJack.finalGoodbye(player);
+                    Console.finalGoodbye(player);
                     flag = false;
                     break;
                 default:
-                    Console_BlackJack.inputError();
+                    Console.inputError();
                     this.chooseGame();
                     break;
             }

@@ -1,4 +1,4 @@
-package io.zipcoder.casino.CardGame.BlackJack;
+package io.zipcoder.casino.BlackJack;
 
 import io.zipcoder.casino.CardGame.Card;
 import io.zipcoder.casino.CardGame.Face;

@@ -1,15 +1,15 @@
-package io.zipcoder.casino.CardGame.BlackJack;
+package io.zipcoder.casino.BlackJack;
 
 import io.zipcoder.casino.CardGame.Card;
 import io.zipcoder.casino.CardGame.CardGame;
 import io.zipcoder.casino.CardGame.Deck;
 import io.zipcoder.casino.CardGame.Face;
 import io.zipcoder.casino.Casino;
+import io.zipcoder.casino.Console;
 import io.zipcoder.casino.Interfaces.Gamble;
 import io.zipcoder.casino.Player;
 
 import java.util.ArrayList;
-import java.util.Scanner;
 
 public class BlackJack extends CardGame implements Gamble {
 
@@ -38,7 +38,7 @@ public class BlackJack extends CardGame implements Gamble {
         player.addToHand(card);
         countPlayerHand(player);
 
-        Console_BlackJack.hitCard(player, card);
+        Console.hitCard(player, card);
     }
 
     public void split(BlackJackPlayer player) {
@@ -57,7 +57,7 @@ public class BlackJack extends CardGame implements Gamble {
     public void doubleDown(BlackJackPlayer blackJackPlayer) {
         if (getJustDealt()) {
             blackJackPlayer.addToBetPot(blackJackPlayer.getInitialBet());
-            Console_BlackJack.doubleDownBet(blackJackPlayer);
+            Console.doubleDownBet(blackJackPlayer);
         }
         setJustDealt(false);
     }
