@@ -1,57 +1,7 @@
 package io.zipcoder.casino;
 
-// BlackJack
-// Solitaire
-// Craps
-// Roulette?
-// Slot Machine?
-
-// Jackpot option? Low chance but player wins $1mil
-//
-//import io.zipcoder.casino.BlackJack.BlackJack;
-//import io.zipcoder.casino.DiceGame.Craps.Craps;
-//import io.zipcoder.casino.CardGame.CardGame.Solitaire.Solitaire;
-//import io.zipcoder.casino.Interfaces.Game;
-//
-//public class Casino {
-//
-//    private int money;
-//    private String casinoName;
-//    private Game game;
-//    private Player player;
-//    private String currentGame;
-//
-//    public void selectGame(int gameNum) {
-//
-//        switch (gameNum) {
-//            case 1:
-//                Game blackJack = new BlackJack(player);
-//                break;
-//            case 2:
-//                Game solitaire = new Solitaire(player);
-//                break;
-//            case 3:
-//                Game craps = new Craps(player);
-//                break;
-//            case 4:
-//                leaveCasino();
-//                break;
-//            default:
-//                System.out.println("Input unknown, please pick again.");
-//                break;
-//        }
-//    }
-//
-//    public void leaveCasino() {
-//    }
-//
-//}
-
-
 import io.zipcoder.casino.BlackJack.BlackJack;
 import io.zipcoder.casino.BlackJack.BlackJackGameplay;
-import io.zipcoder.casino.CardGame.CardGame.Solitaire.Solitaire;
-import io.zipcoder.casino.DiceGame.Craps.Craps;
 
 public final class Casino {
 
@@ -71,7 +21,7 @@ public final class Casino {
 
     public void chooseGame() {
         Player player = Casino.getPlayer();
-        String userInput = Console.getStringInput("\nHi "+ player.getName() + "! What game would you like to play?\n\n<< BlackJack - Solitaire - Craps - Slots - Leave >>");
+        String userInput = InputOutput.getStringInput("\nHi "+ player.getName() + "! What game would you like to play?\n\n<< BlackJack - Solitaire - Craps - Slots - Leave >>");
         String input = userInput.toUpperCase();
 
         boolean flag = true;
@@ -79,25 +29,34 @@ public final class Casino {
         while (flag) {
             switch (input) {
                 case "SOLITAIRE":
-                    Solitaire s = new Solitaire(player);
-                    s.start();
-                    flag = false;
-                    break;
-                case "BLACKJACK":
+                    Console.forceBlackJack(input);
                     BlackJack blackJack = new BlackJack(player);
                     BlackJackGameplay blackJackGameplay = new BlackJackGameplay(blackJack);
                     Console.blackJackWelcome();
                     blackJackGameplay.start();
                     flag = false;
                     break;
+                case "BLACKJACK":
+                    blackJack = new BlackJack(player);
+                    blackJackGameplay = new BlackJackGameplay(blackJack);
+                    Console.blackJackWelcome();
+                    blackJackGameplay.start();
+                    flag = false;
+                    break;
                 case "CRAPS":
-                    Craps craps = new Craps(player);
-                    craps.gamePlay();
+                    Console.forceBlackJack(input);
+                    blackJack = new BlackJack(player);
+                    blackJackGameplay = new BlackJackGameplay(blackJack);
+                    Console.blackJackWelcome();
+                    blackJackGameplay.start();
                     flag = false;
                     break;
                 case "SLOTS":
-                    Slots slot = new Slots();
-                    slot.startSlots();
+                    Console.forceBlackJack(input);
+                    blackJack = new BlackJack(player);
+                    blackJackGameplay = new BlackJackGameplay(blackJack);
+                    Console.blackJackWelcome();
+                    blackJackGameplay.start();
                     flag = false;
                     break;
                 case "LEAVE":
@@ -111,10 +70,6 @@ public final class Casino {
             }
         }
     }
-
-    // public void setPlayer(Player player) {
-//        this.player = player;
-//    }
 
     public static Player getPlayer() {
         return player;

@@ -3,6 +3,7 @@ package io.zipcoder.casino;
 import io.zipcoder.casino.BlackJack.BlackJack;
 import io.zipcoder.casino.BlackJack.BlackJackPlayer;
 import io.zipcoder.casino.CardGame.Card;
+import jdk.internal.util.xml.impl.Input;
 
 import java.util.ArrayList;
 
@@ -10,6 +11,14 @@ public class Console {
 
     public static void inputError() {
         System.out.println("\nThat's not a valid option, please try again.");
+    }
+
+    public static void threadSleep() {
+        try {
+            Thread.sleep(1500);
+        } catch (InterruptedException e) {
+            System.out.println("\nThread sleep error.");
+        }
     }
 
     public static void finalGoodbye(Player player) {
@@ -20,20 +29,25 @@ public class Console {
         }
     }
 
+    public static void forceBlackJack(String input) {
+        System.out.println("\nI know you said " + input + ", but you actually want to play BlackJack, right? Let's play BlackJack!!");
+    }
+
     public static void blackJackWelcome() {
         System.out.println("\nHi! Welcome to BlackJack!\n\nThe minimum bet is $50.");
     }
 
     public static String inGameMenu(BlackJack blackJack, BlackJackPlayer blackJackPlayer, BlackJackPlayer dealer) {
-        String response = Console.getStringInput("\n~~~~~~~~~~~~~~~~~~~\n\nDealer's Current Hand: \n\nMYSTERY-CARD || " + formatHand(dealer.getDealerHand()) + "\n\nDealer's Hand Value: ??" +
-                "\n\n~~~~~~~~~~~~~~~~~~~\n\nYour Current Hand: \n\n" + formatHand(blackJackPlayer.getPlayerHand()) + "\n\nYour Hand Value: " + formatHandValue(blackJack.countPlayerHand(blackJackPlayer)) +
-                "\n\n~~~~~~~~~~~~~~~~~~~\n\nYOUR TURN" + "\n\n~~~~~~~~~~~~~~~~~~~\n\nWhat do you want to do?\n\n<< Hit - Stand - Double Down - Quit >>").toUpperCase();
+        System.out.println("\n~~~~~~~~~~~~~~~~~~~\n\nDealer's Current Hand: \n\nMYSTERY-CARD || " + formatHand(dealer.getDealerHand()) + "\n\nDealer's Hand Value: ??" +
+                "\n\n~~~~~~~~~~~~~~~~~~~\n\nYour Current Hand: \n\n" + formatHand(blackJackPlayer.getPlayerHand()) + "\n\nYour Hand Value: " + formatHandValue(blackJack.countPlayerHand(blackJackPlayer)));
+        threadSleep();
+        String response = InputOutput.getStringInput("\n\n~~~~~~~~~~~~~~~~~~~\n\nYOUR TURN" + "\n\n~~~~~~~~~~~~~~~~~~~\n\nWhat do you want to do?\n\n<< Hit - Stand - Double Down - Quit >>").toUpperCase();
         return response;
     }
 
     public static void endGame(BlackJack blackJack, BlackJackPlayer blackJackPlayer, char result) {
-        String name = blackJackPlayer.getPlayer().getName();
         System.out.println("\n~~~~~~~~~~~~~~~~~~~\n\nDETERMINING WINNER...");
+        threadSleep();
         System.out.println("\n~~~~~~~~~~~~~~~~~~~\n\nDealer's Hand Value: " + blackJack.getDealer().getHandValue());
         System.out.println("\nYour Hand Value: " + blackJackPlayer.getHandValue());
         winOrLose(blackJackPlayer, result);
@@ -60,32 +74,37 @@ public class Console {
     public static void hitCard(BlackJackPlayer blackJackPlayer, Card card) {
         if (blackJackPlayer.getPlayer().getName().equals("Dealer")) {
             System.out.println("\n~~~~~~~~~~~~~~~~~~~\n\nDealer Hit: " + card.toString());
+            threadSleep();
             System.out.println("\n~~~~~~~~~~~~~~~~~~~\n\nDealer's Current Hand: \n\nMYSTERY-CARD || " + formatHand(blackJackPlayer.getDealerHand()) + "\n\nDealer's Hand Value: ??");
         } else {
             System.out.println("\n~~~~~~~~~~~~~~~~~~~\n\nYou Hit: " + card.toString());
+            threadSleep();
             // System.out.println("\n~~~~~~~~~~~~~~~~~~~\n\nYour Current Hand: \n\n" + formatHand(blackJackPlayer.getPlayerHand()) + "\n\nYour Hand Value: " + formatHandValue(blackJack.countPlayerHand(blackJackPlayer)));
         }
     }
 
     public static void standingStill() {
         System.out.println("\n~~~~~~~~~~~~~~~~~~~\n\nStanding still!");
+        threadSleep();
     }
 
     public static void dealerTurn() {
+        threadSleep();
         System.out.println("\n~~~~~~~~~~~~~~~~~~~\n\nDEALER'S TURN");
     }
 
     public static void initiateGame(BlackJackPlayer blackJackPlayer) {
-        System.out.println("\n~~~~~~~~~~~~~~~~~~~\n\nYOUR BET: " + blackJackPlayer.getBetPot());
+        System.out.println("\n~~~~~~~~~~~~~~~~~~~\n\nYOUR BET: $" + blackJackPlayer.getBetPot());
         System.out.println("\n~~~~~~~~~~~~~~~~~~~\n\nGAME START - DEALING CARDS");
+        threadSleep();
     }
 
     public static String askPlayAgain() {
-        return Console.getStringInput("\n~~~~~~~~~~~~~~~~~~~\n\nWould you like to play again?\n\n<< Yes - No >>").toUpperCase();
+        return InputOutput.getStringInput("\n~~~~~~~~~~~~~~~~~~~\n\nWould you like to play again?\n\n<< Yes - No >>").toUpperCase();
     }
 
     public static int getPlayerBet() {
-        return Console.getIntInput("\n~~~~~~~~~~~~~~~~~~~\n\nHow much would you like to bet?");
+        return InputOutput.getIntInput("\n~~~~~~~~~~~~~~~~~~~\n\nHow much would you like to bet?");
     }
 
     public static void minBetNotMet() {

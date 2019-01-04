@@ -92,7 +92,6 @@ public class BlackJack extends CardGame implements Gamble {
         return aceIsEleven;
     }
 
-    // REFACTOR THIS!!!!
     public ArrayList<Integer> countPlayerHand(BlackJackPlayer player) {
         ArrayList<Integer> handSum = new ArrayList<>();
 
